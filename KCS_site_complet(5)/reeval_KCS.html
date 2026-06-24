@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réévaluation — KCS</title>
+<script src="kcs-db.js?v=10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f1117;--surface:#1e2030;--surface2:#252840;--border:#2e3250;--border2:#3d4270;
+  --text:#e8eaf6;--text2:#9fa8da;--text3:#5c6bc0;
+  --accent:#6c63ff;--accent2:#a89cff;--accent-bg:rgba(108,99,255,0.12);--accent-border:rgba(108,99,255,0.35);
+  --success:#00e676;--danger:#ff5252;--warning:#ff9f43;
+  --radius:10px;--radius-lg:16px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+.header{background:var(--surface);border-bottom:1px solid var(--border2);padding:14px 22px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20;}
+.header-back{display:flex;align-items:center;gap:6px;color:var(--text3);font-size:12px;cursor:pointer;padding:6px 10px;border-radius:var(--radius);border:1px solid var(--border2);background:transparent;font-family:inherit;transition:all 0.2s;}
+.header-back:hover{background:var(--surface2);color:var(--text2);}
+.header-info{flex:1;}
+.header-title{font-size:15px;font-weight:700;color:var(--text);}
+.header-sub{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.tabs{display:flex;border-bottom:1px solid var(--border2);background:var(--surface);padding:0 22px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:12px 18px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent);}
+.panel{display:none;padding:20px 22px;max-width:900px;margin:0 auto;}
+.panel.active{display:block;}
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px;}
+.card-title{font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.card-title svg{width:15px;height:15px;flex-shrink:0;}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.field{flex:1;min-width:140px;margin-bottom:10px;}
+label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:5px;}
+input[type=text],input[type=date],input[type=number],textarea,select{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+textarea{resize:vertical;min-height:60px;}
+/* EVA */
+.eva-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:10px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);}
+.eva-lbl{font-size:12px;color:var(--text2);min-width:160px;font-weight:500;}
+.eva-slider{flex:1;}
+.eva-val{font-size:16px;font-weight:800;font-family:'JetBrains Mono',monospace;min-width:32px;text-align:center;}
+/* Data table */
+.data-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px;}
+.data-table th{background:var(--surface2);color:var(--text3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:8px 10px;text-align:left;}
+.data-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+.data-table input{background:transparent;border:none;color:var(--text);font-size:12px;font-family:'JetBrains Mono',monospace;width:80px;outline:none;}
+.data-table input:focus{background:var(--surface2);border-radius:4px;padding:2px 6px;}
+.th-sain{color:#00e676;} .th-atteint{color:#ff9f43;} .th-diff{color:var(--text3);}
+.col-diff{font-family:'JetBrains Mono',monospace;font-size:11px;}
+/* RTS */
+.rts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.rts-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-size:12px;color:var(--text2);}
+.rts-item input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px;cursor:pointer;}
+.rts-item.checked{border-color:var(--success);background:rgba(0,230,118,0.08);color:var(--success);}
+.rts-score{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border2);}
+.rts-num{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent2);}
+.rts-verdict{font-size:13px;font-weight:600;}
+/* Historique */
+.reeval-item{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
+.reeval-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent2);min-width:90px;font-weight:600;}
+.reeval-info{flex:1;}
+.reeval-scores{font-size:11px;color:var(--text2);}
+.reeval-del{background:transparent;border:1px solid var(--border2);color:var(--danger);border-radius:8px;padding:4px 10px;cursor:pointer;font-size:11px;font-family:inherit;}
+/* Ref badge */
+.ref-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(108,99,255,0.12);border:1px solid rgba(108,99,255,0.35);color:var(--accent2);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:600;margin-left:8px;}
+/* Buttons */
+.btn{padding:10px 18px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn-primary:hover{opacity:0.9;}
+.btn:hover{background:var(--surface);color:var(--text);}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+/* Chart */
+.chart-wrap{position:relative;height:240px;margin-bottom:16px;}
+/* Ref row */
+.ref-row{background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.2);}
+/* Sep label */
+.sep-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);margin:14px 0 8px;padding-top:10px;border-top:1px solid var(--border);}
+/* Empty */
+.empty{padding:40px;text-align:center;color:var(--text3);font-size:13px;}
+/* Status */
+#save-status{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+@media(max-width:600px){
+  .rts-grid{grid-template-columns:1fr;}
+  .eva-lbl{min-width:100%;flex-basis:100%;}
+  .eva-row{flex-wrap:wrap;}
+  .row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="header-back" onclick="window.location.href='index.html'">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Accueil
+  </button>
+  <div class="header-info">
+    <div class="header-title" id="header-title">Réévaluation</div>
+    <div class="header-sub" id="header-sub">Chargement…</div>
+  </div>
+  <span id="save-status"></span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('saisie')">✏️ Nouvelle séance</div>
+  <div class="tab" onclick="showTab('historique')">📋 Historique</div>
+  <div class="tab" onclick="showTab('evolution')">📈 Évolution</div>
+</div>
+
+<!-- PANEL SAISIE -->
+<div class="panel active" id="panel-saisie">
+
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Séance de réévaluation
+    </div>
+    <div class="row">
+      <div class="field"><label>Date de la séance</label><input type="date" id="r-date"></div>
+      <div class="field"><label>Séances réalisées depuis bilan initial</label><input type="number" id="r-nb-seances" placeholder="ex: 10"></div>
+    </div>
+  </div>
+
+  <!-- EVA -->
+  <div class="card" id="card-eva">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2M12 8v4M12 16h.01"/></svg>
+      Douleur EVA
+      <span class="ref-badge">Bilan initial en gris</span>
+    </div>
+    <div id="eva-rows"></div>
+  </div>
+
+  <!-- Scores fonctionnels -->
+  <div class="card" id="card-scores" style="display:none;">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Scores fonctionnels
+    </div>
+    <div id="scores-rows"></div>
+  </div>
+
+  <!-- Amplitudes -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Amplitudes articulaires (°)
+      <span class="ref-badge">Valeurs bilan initial</span>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Mouvement</th><th class="th-sain">Initial sain</th><th class="th-sain">Initial atteint</th><th class="th-atteint">Actuel sain</th><th class="th-atteint">Actuel atteint</th><th class="th-diff">Évolution</th></tr></thead>
+      <tbody id="amp-rows"></tbody>
+    </table>
+  </div>
+
+  <!-- Force musculaire -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>
+      Force musculaire
+      <span class="ref-badge">Valeurs bilan initial</span>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Groupe musculaire</th><th class="th-sain">Initial sain</th><th class="th-sain">Initial atteint</th><th class="th-atteint">Actuel sain</th><th class="th-atteint">Actuel atteint</th><th class="th-diff">Évolution</th></tr></thead>
+      <tbody id="force-rows"></tbody>
+    </table>
+  </div>
+
+  <!-- RTS -->
+  <div class="card" id="card-rts" style="display:none;">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Retour au sport (RTS)
+    </div>
+    <div class="rts-grid" id="rts-grid"></div>
+    <div class="rts-score">
+      <span class="rts-num" id="rts-num">0</span>
+      <div><div class="rts-verdict" id="rts-verdict" style="color:var(--danger)">Retour au sport non autorisé</div><div style="font-size:11px;color:var(--text3)">critères validés</div></div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Notes cliniques
+    </div>
+    <textarea id="r-notes" placeholder="Observations cliniques, évolution fonctionnelle, tolérance au traitement…" style="min-height:80px;"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" onclick="sauvegarderReeval()">✓ Enregistrer cette séance</button>
+    <button class="btn" onclick="window.location.href='index.html'">← Retour à l'accueil</button>
+  </div>
+
+</div>
+
+<!-- PANEL HISTORIQUE -->
+<div class="panel" id="panel-historique">
+  <div id="historique-list"><div class="empty">Aucune réévaluation enregistrée</div></div>
+</div>
+
+<!-- PANEL EVOLUTION -->
+<div class="panel" id="panel-evolution">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Évolution de la douleur (EVA)
+    </div>
+    <div class="chart-wrap"><canvas id="chart-eva"></canvas></div>
+  </div>
+  <div class="card" id="card-scores-chart" style="display:none;">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      Évolution des scores fonctionnels
+    </div>
+    <div class="chart-wrap"><canvas id="chart-scores"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Évolution RTS
+    </div>
+    <div class="chart-wrap"><canvas id="chart-rts"></canvas></div>
+  </div>
+</div>
+
+<script>
+// ── Config par type de bilan ─────────────────────────────────────────────────
+const CONFIGS = {
+  genou: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-effort',label:"À l'effort"},{id:'v-nuit',label:'La nuit'},{id:'v-palp',label:'À la palpation'}],
+    scores: [{id:'koos',label:'KOOS Sport (%)'}],
+    amplitudes: ['Flexion genou','Extension genou','Flexion hanche','Dorsiflexion cheville'],
+    force: ['Quadriceps','Ischio-jambiers','Abducteurs hanche'],
+    rts: ["EVA ≤ 2/10 à l'effort","Absence de gonflement","KOOS ≥ 75/100","ACL-RSI ≥ 77%","LSI Quadriceps ≥ 90%","LSI IJ ≥ 90%","Single Leg Hop LSI ≥ 90%","Triple Hop LSI ≥ 90%","Gestes sportifs spécifiques sans douleur","Accord médical"]
+  },
+  cheville: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-charge',label:'En mise en charge'},{id:'v-effort',label:"À l'effort"},{id:'v-nuit',label:'La nuit'}],
+    scores: [{id:'faamdl',label:'FAAM ADL (%)'},{id:'faasp',label:'FAAM Sport (%)'}],
+    amplitudes: ['Dorsiflexion genou tendu','Dorsiflexion genou fléchi','Flexion plantaire','Inversion','Éversion'],
+    force: ['Triceps sural','Fibulaires','Tibial antérieur'],
+    rts: ["EVA ≤ 2/10 à l'effort","FAAM Sport ≥ 80%","LSI Heel Rise ≥ 90%","Proprioception normalisée","Gestes sportifs sans douleur","Accord médical"]
+  },
+  epaule: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-mouv',label:'Au mouvement'},{id:'v-nuit',label:'La nuit'},{id:'v-effort',label:"À l'effort sportif"}],
+    scores: [{id:'quickdash',label:'QuickDASH (pts — bas = bien)'}],
+    amplitudes: ['Flexion','Abduction','RE bras au corps','RI bras au corps','RE 90°','RI 90°'],
+    force: ['RE (dynamomètre)','RI (dynamomètre)','Abducteurs','Stabilisateurs scapulaires'],
+    rts: ["EVA ≤ 2/10 à l'effort","QuickDASH ≤ 25","LSI RE ≥ 90%","LSI Abduction ≥ 90%","Gestes sportifs sans douleur","Accord médical"]
+  },
+  hanche: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-marche',label:'À la marche'},{id:'v-course',label:'À la course'},{id:'v-nuit',label:'La nuit'}],
+    scores: [{id:'hagos',label:'HAGOS (%)'}],
+    amplitudes: ['Flexion hanche','Extension hanche','Abduction','Rotation interne','Rotation externe'],
+    force: ['Abducteurs','Fléchisseurs hanche','Quadriceps','Grand fessier'],
+    rts: ["EVA ≤ 2/10 à l'effort","HAGOS ≥ 75%","Flexion hanche ≥ 120°","Symétrie force ≥ 90%","Gestes sportifs sans douleur","Accord médical"]
+  },
+  rachis: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-mouv',label:'Au mouvement'},{id:'v-nuit',label:'La nuit'},{id:'v-travail',label:'Au travail'}],
+    scores: [{id:'odi',label:'ODI (%)'},{id:'ndi',label:'NDI (%)'}],
+    amplitudes: ['Flexion lombaire','Extension lombaire','Flexion cervicale','Extension cervicale'],
+    force: ['Fléchisseurs tronc','Extenseurs tronc','Stabilisateurs'],
+    rts: ["EVA ≤ 2/10","ODI/NDI ≤ 20%","Mobilité normalisée","Activités quotidiennes sans douleur","Accord médical"]
+  },
+  tendon: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-ech',label:"À l'échauffement"},{id:'v-effort',label:'En plein effort'},{id:'v-lend',label:'Le lendemain'}],
+    scores: [{id:'visap',label:'VISA-P (pts)'},{id:'visaa',label:'VISA-A (pts)'}],
+    amplitudes: ['Flexion genou','Dorsiflexion cheville','Étirement IJ'],
+    force: ['Excentrique IJ','Concentrique quadriceps','Heel Rise (nb rép)'],
+    rts: ["EVA ≤ 2/10 à l'effort","VISA ≥ 80","LSI Heel Rise ≥ 90%","LSI Hop ≥ 90%","Charge progressive tolérée","Accord médical"]
+  },
+  pubalgie: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-marche',label:'À la marche'},{id:'v-course',label:'À la course'},{id:'v-frappe',label:'À la frappe/sprint'},{id:'v-lend',label:'Le lendemain'}],
+    scores: [{id:'hagos',label:'HAGOS (%)'}],
+    amplitudes: ['Adduction hanche','Abduction hanche','Flexion hanche'],
+    force: ['Adducteurs','Abducteurs','Fléchisseurs hanche','Abdominaux'],
+    rts: ["EVA ≤ 2/10 à l'effort","Palpation pubis indolore","HAGOS ≥ 75%","Symétrie adducteurs ≥ 90%","Sprint sans douleur","Accord médical"]
+  },
+  musculaire: {
+    eva: [{id:'v-repos',label:'Au repos'},{id:'v-palp',label:'À la palpation'},{id:'v-etir',label:"À l'étirement"},{id:'v-cont',label:'À la contraction'},{id:'v-effort',label:"À l'effort"}],
+    scores: [],
+    amplitudes: ['Flexion hanche','Extension genou','Étirement IJ (angle poplité)','Dorsiflexion cheville'],
+    force: ['IJ concentrique','IJ excentrique','Quadriceps','Adducteurs'],
+    rts: ["EVA ≤ 2/10 à l'effort","EVA ≤ 2/10 le lendemain","Ratio IJ/Q ≥ 60%","LSI IJ excentrique ≥ 90%","LSI Hop ≥ 90%","Gestes sportifs sans douleur","Accord médical"]
+  }
+};
+
+// ── État global ──────────────────────────────────────────────────────────────
+let bilanId = null;
+let bilanInitial = null;
+let reetType = null;
+let reetList = [];
+let currentReetId = null;
+let charts = {};
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+(async function init(){
+  await window.KCS_checkAuth();
+  const params = new URLSearchParams(window.location.search);
+  bilanId = params.get('bid');
+  if (!bilanId) { alert('Aucun bilan spécifié.'); window.location.href='index.html'; return; }
+
+  bilanInitial = await window.KCS_loadBilan(bilanId);
+  if (!bilanInitial) { alert('Bilan introuvable.'); window.location.href='index.html'; return; }
+
+  reetType = bilanInitial.type;
+  const cfg = CONFIGS[reetType] || CONFIGS.genou;
+  const nom = ((bilanInitial.prenom_patient||'')+' '+(bilanInitial.nom_patient||'')).trim() || 'Patient';
+
+  document.getElementById('header-title').textContent = 'Réévaluation — ' + nom;
+  document.getElementById('header-sub').textContent = reetType.charAt(0).toUpperCase()+reetType.slice(1) + ' · ' + new Date(bilanInitial.updated_at).toLocaleDateString('fr-FR');
+  document.getElementById('r-date').value = new Date().toISOString().split('T')[0];
+
+  buildEVA(cfg, bilanInitial.data);
+  buildScores(cfg, bilanInitial.data);
+  buildAmplitudes(cfg, bilanInitial.data);
+  buildForce(cfg, bilanInitial.data);
+  buildRTS(cfg, bilanInitial.data);
+
+  reetList = await window.KCS_listReevals(bilanId);
+  renderHistorique();
+})();
+
+// ── Navigation onglets ───────────────────────────────────────────────────────
+function showTab(tab){
+  document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.toggle('active',['saisie','historique','evolution'][i]===tab);});
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='evolution') renderCharts();
+}
+
+// ── EVA ──────────────────────────────────────────────────────────────────────
+function buildEVA(cfg, refData){
+  const container = document.getElementById('eva-rows');
+  container.innerHTML = '';
+  cfg.eva.forEach(ev => {
+    const refVal = refData && refData[ev.id] !== undefined ? refData[ev.id] : '—';
+    const row = document.createElement('div');
+    row.className = 'eva-row';
+    row.innerHTML = `
+      <span class="eva-lbl">${ev.label} <span style="font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;">(initial: ${refVal}/10)</span></span>
+      <input type="range" class="eva-slider" id="r-eva-${ev.id}" min="0" max="10" step="1" value="0"
+        oninput="document.getElementById('r-eva-val-${ev.id}').textContent=this.value">
+      <span class="eva-val" id="r-eva-val-${ev.id}" style="color:var(--success)">0</span>`;
+    container.appendChild(row);
+  });
+}
+
+// ── Scores ───────────────────────────────────────────────────────────────────
+function buildScores(cfg, refData){
+  const card = document.getElementById('card-scores');
+  const container = document.getElementById('scores-rows');
+  if (!cfg.scores || cfg.scores.length === 0) { card.style.display='none'; return; }
+  card.style.display='';
+  container.innerHTML = '';
+  cfg.scores.forEach(sc => {
+    const refVal = refData && refData[sc.id] !== undefined ? refData[sc.id] : '—';
+    const div = document.createElement('div');
+    div.className = 'field';
+    div.innerHTML = `<label>${sc.label} <span style="font-weight:400;color:var(--text3);">(initial: ${refVal})</span></label>
+      <input type="number" id="r-score-${sc.id}" placeholder="ex: 75">`;
+    container.appendChild(div);
+  });
+}
+
+// ── Amplitudes ───────────────────────────────────────────────────────────────
+function buildAmplitudes(cfg, refData){
+  const tbody = document.getElementById('amp-rows');
+  tbody.innerHTML = '';
+  const initAmps = refData ? extractAmplitudes(refData) : {};
+  cfg.amplitudes.forEach((mvt, i) => {
+    const key = 'amp_'+i;
+    const initSain = initAmps['sain_'+i] || '—';
+    const initAtt = initAmps['att_'+i] || '—';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${mvt}</td>
+      <td class="ref-row" style="color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px;">${initSain}</td>
+      <td class="ref-row" style="color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px;">${initAtt}</td>
+      <td><input type="text" id="r-amp-sain-${i}" placeholder="°"></td>
+      <td><input type="text" id="r-amp-att-${i}" placeholder="°" oninput="calcEvolAmp(${i},'${initAtt}')"></td>
+      <td class="col-diff" id="r-amp-evol-${i}" style="color:var(--text3)">—</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function extractAmplitudes(data){
+  const result = {};
+  if (!data) return result;
+  // Try to extract from form data (amp-s / amp-a pattern)
+  Object.keys(data).forEach(k => {
+    const mSain = k.match(/^amp-s-(\d+)$/) || k.match(/^amp_s_(\d+)$/);
+    const mAtt = k.match(/^amp-a-(\d+)$/) || k.match(/^amp_a_(\d+)$/);
+    if (mSain) result['sain_'+mSain[1]] = data[k];
+    if (mAtt) result['att_'+mAtt[1]] = data[k];
+  });
+  return result;
+}
+
+function calcEvolAmp(i, initAtt){
+  const cur = parseFloat(document.getElementById('r-amp-att-'+i)?.value);
+  const ref = parseFloat(initAtt);
+  const el = document.getElementById('r-amp-evol-'+i);
+  if (!el) return;
+  if (isNaN(cur) || isNaN(ref)) { el.textContent = '—'; el.style.color='var(--text3)'; return; }
+  const diff = cur - ref;
+  el.textContent = (diff >= 0 ? '+' : '') + diff + '°';
+  el.style.color = diff >= 0 ? 'var(--success)' : 'var(--danger)';
+}
+
+// ── Force ────────────────────────────────────────────────────────────────────
+function buildForce(cfg, refData){
+  const tbody = document.getElementById('force-rows');
+  tbody.innerHTML = '';
+  const initForce = refData ? extractForce(refData) : {};
+  cfg.force.forEach((muscle, i) => {
+    const initSain = initForce['sain_'+i] || '—';
+    const initAtt = initForce['att_'+i] || '—';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${muscle}</td>
+      <td class="ref-row" style="color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px;">${initSain}</td>
+      <td class="ref-row" style="color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:11px;">${initAtt}</td>
+      <td><input type="text" id="r-force-sain-${i}" placeholder="5/5 ou N"></td>
+      <td><input type="text" id="r-force-att-${i}" placeholder="5/5 ou N"></td>
+      <td class="col-diff" style="color:var(--text3)">—</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function extractForce(data){
+  const result = {};
+  if (!data) return result;
+  Object.keys(data).forEach(k => {
+    const mSain = k.match(/^force-sain-(\d+)$/) || k.match(/^amp-s-3(\d)$/) || k.match(/^ms-(\d+)$/);
+    const mAtt = k.match(/^force-att-(\d+)$/) || k.match(/^amp-a-3(\d)$/) || k.match(/^ma-(\d+)$/);
+    if (mSain) result['sain_'+mSain[1]] = data[k];
+    if (mAtt) result['att_'+mAtt[1]] = data[k];
+  });
+  return result;
+}
+
+// ── RTS ──────────────────────────────────────────────────────────────────────
+function buildRTS(cfg, refData){
+  const card = document.getElementById('card-rts');
+  const grid = document.getElementById('rts-grid');
+  if (!cfg.rts || cfg.rts.length === 0) { card.style.display='none'; return; }
+  card.style.display='';
+  grid.innerHTML = '';
+  cfg.rts.forEach((critere, i) => {
+    const lbl = document.createElement('label');
+    lbl.className = 'rts-item';
+    lbl.id = 'r-rts-item-'+i;
+    lbl.innerHTML = `<input type="checkbox" id="r-rts-${i}" onchange="updateRTS()"><span>${critere}</span>`;
+    grid.appendChild(lbl);
+  });
+  updateRTS();
+}
+
+function updateRTS(){
+  const cfg = CONFIGS[reetType] || CONFIGS.genou;
+  const total = cfg.rts ? cfg.rts.length : 0;
+  let checked = 0;
+  for(let i=0; i<total; i++){
+    const cb = document.getElementById('r-rts-'+i);
+    const item = document.getElementById('r-rts-item-'+i);
+    if(cb && cb.checked){ checked++; if(item) item.classList.add('checked'); }
+    else if(item) item.classList.remove('checked');
+  }
+  document.getElementById('rts-num').textContent = checked+'/'+total;
+  const pct = total ? checked/total : 0;
+  const verdict = document.getElementById('rts-verdict');
+  if(pct >= 1){ verdict.textContent='✅ Retour au sport autorisé'; verdict.style.color='var(--success)'; }
+  else if(pct >= 0.7){ verdict.textContent='⚠️ Retour progressif envisageable'; verdict.style.color='var(--warning)'; }
+  else{ verdict.textContent='❌ Retour au sport non autorisé'; verdict.style.color='var(--danger)'; }
+}
+
+// ── Sauvegarder ──────────────────────────────────────────────────────────────
+async function sauvegarderReeval(){
+  const cfg = CONFIGS[reetType] || CONFIGS.genou;
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+
+  const eva = {};
+  cfg.eva.forEach(ev => {
+    const el = document.getElementById('r-eva-'+ev.id);
+    if(el) eva[ev.id] = parseInt(el.value)||0;
+  });
+
+  const scores = {};
+  (cfg.scores||[]).forEach(sc => {
+    const el = document.getElementById('r-score-'+sc.id);
+    if(el && el.value) scores[sc.id] = parseFloat(el.value);
+  });
+
+  const amplitudes = {};
+  cfg.amplitudes.forEach((_, i) => {
+    const s = document.getElementById('r-amp-sain-'+i);
+    const a = document.getElementById('r-amp-att-'+i);
+    if(s) amplitudes['sain_'+i] = s.value;
+    if(a) amplitudes['att_'+i] = a.value;
+  });
+
+  const force_musc = {};
+  cfg.force.forEach((_, i) => {
+    const s = document.getElementById('r-force-sain-'+i);
+    const a = document.getElementById('r-force-att-'+i);
+    if(s) force_musc['sain_'+i] = s.value;
+    if(a) force_musc['att_'+i] = a.value;
+  });
+
+  const rts_items = {};
+  let rts_score = 0;
+  (cfg.rts||[]).forEach((_, i) => {
+    const cb = document.getElementById('r-rts-'+i);
+    if(cb){ rts_items[i] = cb.checked; if(cb.checked) rts_score++; }
+  });
+
+  const data = {
+    eva, scores, amplitudes, force_musc, rts_items,
+    rts_score,
+    notes: document.getElementById('r-notes').value,
+    date_reeval: document.getElementById('r-date').value
+  };
+
+  const id = await window.KCS_createReeval(
+    bilanId, reetType,
+    bilanInitial.nom_patient, bilanInitial.prenom_patient,
+    data
+  );
+
+  if(id){
+    reetList = await window.KCS_listReevals(bilanId);
+    renderHistorique();
+    btn.textContent = '✓ Séance enregistrée !';
+    btn.style.background = 'var(--success)';
+    setTimeout(()=>{ btn.disabled=false; btn.textContent='✓ Enregistrer cette séance'; btn.style.background=''; }, 2500);
+    showTab('historique');
+  } else {
+    btn.textContent = 'Erreur — Réessayer';
+    btn.style.background = 'var(--danger)';
+    setTimeout(()=>{ btn.disabled=false; btn.textContent='✓ Enregistrer cette séance'; btn.style.background=''; }, 3000);
+  }
+}
+
+// ── Historique ───────────────────────────────────────────────────────────────
+function renderHistorique(){
+  const container = document.getElementById('historique-list');
+  const cfg = CONFIGS[reetType] || CONFIGS.genou;
+
+  if(!reetList || reetList.length === 0){
+    container.innerHTML = '<div class="empty">Aucune réévaluation enregistrée pour ce patient</div>';
+    return;
+  }
+
+  // Ligne de référence (bilan initial)
+  let html = `<div class="reeval-item" style="border-color:rgba(108,99,255,0.4);background:rgba(108,99,255,0.05);">
+    <div class="reeval-date" style="color:var(--accent2);">Bilan initial</div>
+    <div class="reeval-info">
+      <div style="font-size:12px;font-weight:600;color:var(--accent2);">Référence — ${((bilanInitial.prenom_patient||'')+' '+(bilanInitial.nom_patient||'')).trim()}</div>
+      <div class="reeval-scores">${formatEVASummary(bilanInitial.data, cfg)}</div>
+    </div>
+  </div>`;
+
+  reetList.forEach(r => {
+    const d = new Date(r.date_reeval+'T12:00:00');
+    const ds = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+    const evaMax = r.eva ? Math.max(...Object.values(r.eva)) : '—';
+    const rts = r.rts_score || 0;
+    const total = cfg.rts ? cfg.rts.length : 0;
+    const scoresStr = Object.entries(r.scores||{}).map(([k,v])=>k+': '+v).join(' · ') || '';
+
+    html += `<div class="reeval-item">
+      <div class="reeval-date">${ds}</div>
+      <div class="reeval-info">
+        <div style="font-size:12px;font-weight:600;color:var(--text);">EVA max: ${evaMax}/10 · RTS: ${rts}/${total}</div>
+        <div class="reeval-scores">${scoresStr || '—'}</div>
+        ${r.notes ? `<div class="reeval-scores" style="margin-top:4px;font-style:italic;">"${r.notes.substring(0,80)}${r.notes.length>80?'…':''}"</div>` : ''}
+      </div>
+      <button class="reeval-del" onclick="supprimerReeval('${r.id}')">Suppr.</button>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function formatEVASummary(data, cfg){
+  if(!data || !cfg.eva) return '—';
+  const vals = cfg.eva.map(ev => data[ev.id] !== undefined ? ev.label+': '+data[ev.id]+'/10' : null).filter(Boolean);
+  return vals.join(' · ') || '—';
+}
+
+async function supprimerReeval(id){
+  if(!confirm('Supprimer cette réévaluation ?')) return;
+  await window.KCS_deleteReeval(id);
+  reetList = await window.KCS_listReevals(bilanId);
+  renderHistorique();
+}
+
+// ── Graphiques ───────────────────────────────────────────────────────────────
+function renderCharts(){
+  const cfg = CONFIGS[reetType] || CONFIGS.genou;
+  if(!reetList || reetList.length === 0) return;
+
+  const labels = ['Bilan initial', ...reetList.map(r => new Date(r.date_reeval+'T12:00:00').toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}))];
+  const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{labels:{color:'#9fa8da',font:{size:11}}}}, scales:{ x:{ticks:{color:'#5c6bc0'},grid:{color:'#2e3250'}}, y:{ticks:{color:'#5c6bc0'},grid:{color:'#2e3250'}}}};
+
+  // Chart EVA
+  const evaDatasets = cfg.eva.slice(0,3).map((ev, i) => {
+    const colors = ['#ff5252','#ff9f43','#00b0ff'];
+    const initVal = bilanInitial.data ? (bilanInitial.data[ev.id]||0) : 0;
+    const vals = [initVal, ...reetList.map(r => r.eva ? (r.eva[ev.id]||0) : 0)];
+    return { label: ev.label, data: vals, borderColor: colors[i], backgroundColor: colors[i]+'33', tension: 0.3, fill: false };
+  });
+  if(charts.eva) charts.eva.destroy();
+  charts.eva = new Chart(document.getElementById('chart-eva'), { type:'line', data:{labels, datasets: evaDatasets}, options:{...chartOpts, scales:{...chartOpts.scales, y:{...chartOpts.scales.y, min:0, max:10}}}});
+
+  // Chart Scores
+  if(cfg.scores && cfg.scores.length > 0){
+    document.getElementById('card-scores-chart').style.display='';
+    const scoreDatasets = cfg.scores.map((sc, i) => {
+      const colors = ['#6c63ff','#00e676','#ffd740'];
+      const initVal = bilanInitial.data ? (bilanInitial.data[sc.id]||0) : 0;
+      const vals = [initVal, ...reetList.map(r => r.scores ? (r.scores[sc.id]||0) : 0)];
+      return { label: sc.label, data: vals, borderColor: colors[i], backgroundColor: colors[i]+'33', tension: 0.3, fill: false };
+    });
+    if(charts.scores) charts.scores.destroy();
+    charts.scores = new Chart(document.getElementById('chart-scores'), { type:'line', data:{labels, datasets: scoreDatasets}, options: chartOpts});
+  }
+
+  // Chart RTS
+  const rtsTotal = cfg.rts ? cfg.rts.length : 1;
+  const initRts = 0; // Bilan initial = pas encore de RTS
+  const rtsVals = [initRts, ...reetList.map(r => Math.round(((r.rts_score||0)/rtsTotal)*100))];
+  if(charts.rts) charts.rts.destroy();
+  charts.rts = new Chart(document.getElementById('chart-rts'), {
+    type:'bar',
+    data:{ labels, datasets:[{ label:'Critères RTS (%)', data: rtsVals, backgroundColor: rtsVals.map(v=>v>=100?'#00e67699':v>=70?'#ff9f4399':'#ff525299'), borderColor: rtsVals.map(v=>v>=100?'#00e676':v>=70?'#ff9f43':'#ff5252'), borderWidth:2}]},
+    options:{...chartOpts, scales:{...chartOpts.scales, y:{...chartOpts.scales.y, min:0, max:100}}}
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Epaule — KCS</title>
+<script>var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this.parsedData=[];for(var b=[],d=0,e=this.data.length;e>d;d++){var f=this.data.charCodeAt(d);f>65536?(b[0]=240|(1835008&f)>>>18,b[1]=128|(258048&f)>>>12,b[2]=128|(4032&f)>>>6,b[3]=128|63&f):f>2048?(b[0]=224|(61440&f)>>>12,b[1]=128|(4032&f)>>>6,b[2]=128|63&f):f>128?(b[0]=192|(1984&f)>>>6,b[1]=128|63&f):b[0]=f,this.parsedData=this.parsedData.concat(b)}this.parsedData.length!=this.data.length&&(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function i(a,b){if(void 0==a.length)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function j(a,b){this.totalCount=a,this.dataCount=b}function k(){this.buffer=[],this.length=0}function m(){return"undefined"!=typeof CanvasRenderingContext2D}function n(){var a=!1,b=navigator.userAgent;return/android/i.test(b)&&(a=!0,aMat=b.toString().match(/android ([0-9]\.[0-9])/i),aMat&&aMat[1]&&(a=parseFloat(aMat[1]))),a}function r(a,b){for(var c=1,e=s(a),f=0,g=l.length;g>=f;f++){var h=0;switch(b){case d.L:h=l[f][0];break;case d.M:h=l[f][1];break;case d.Q:h=l[f][2];break;case d.H:h=l[f][3]}if(h>=e)break;c++}if(c>l.length)throw new Error("Too long data");return c}function s(a){var b=encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a");return b.length+(b.length!=a?3:0)}a.prototype={getLength:function(){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;c>b;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b){var c=new a(b);this.dataList.push(c),this.dataCache=null},isDark:function(a,b){if(0>a||this.moduleCount<=a||0>b||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b]},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b){for(var c=-1;7>=c;c++)if(!(-1>=a+c||this.moduleCount<=a+c))for(var d=-1;7>=d;d++)-1>=b+d||this.moduleCount<=b+d||(this.modules[a+c][b+d]=c>=0&&6>=c&&(0==d||6==d)||d>=0&&6>=d&&(0==c||6==c)||c>=2&&4>=c&&d>=2&&4>=d?!0:!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;8>c;c++){this.makeImpl(!0,c);var d=f.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c),e=1;this.make();for(var f=0;f<this.modules.length;f++)for(var g=f*e,h=0;h<this.modules[f].length;h++){var i=h*e,j=this.modules[f][h];j&&(d.beginFill(0,100),d.moveTo(i,g),d.lineTo(i+e,g),d.lineTo(i+e,g+e),d.lineTo(i,g+e),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6]&&(this.modules[a][6]=0==a%2);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b]&&(this.modules[6][b]=0==b%2)},setupPositionAdjustPattern:function(){for(var a=f.getPatternPosition(this.typeNumber),b=0;b<a.length;b++)for(var c=0;c<a.length;c++){var d=a[b],e=a[c];if(null==this.modules[d][e])for(var g=-2;2>=g;g++)for(var h=-2;2>=h;h++)this.modules[d+g][e+h]=-2==g||2==g||-2==h||2==h||0==g&&0==h?!0:!1}},setupTypeNumber:function(a){for(var b=f.getBCHTypeNumber(this.typeNumber),c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3]=d}for(var c=0;18>c;c++){var d=!a&&1==(1&b>>c);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=f.getBCHTypeInfo(c),e=0;15>e;e++){var g=!a&&1==(1&d>>e);6>e?this.modules[e][8]=g:8>e?this.modules[e+1][8]=g:this.modules[this.moduleCount-15+e][8]=g}for(var e=0;15>e;e++){var g=!a&&1==(1&d>>e);8>e?this.modules[8][this.moduleCount-e-1]=g:9>e?this.modules[8][15-e-1+1]=g:this.modules[8][15-e-1]=g}this.modules[this.moduleCount-8][8]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,g=0,h=this.moduleCount-1;h>0;h-=2)for(6==h&&h--;;){for(var i=0;2>i;i++)if(null==this.modules[d][h-i]){var j=!1;g<a.length&&(j=1==(1&a[g]>>>e));var k=f.getMask(b,d,h-i);k&&(j=!j),this.modules[d][h-i]=j,e--,-1==e&&(g++,e=7)}if(d+=c,0>d||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,d){for(var e=j.getRSBlocks(a,c),g=new k,h=0;h<d.length;h++){var i=d[h];g.put(i.mode,4),g.put(i.getLength(),f.getLengthInBits(i.mode,a)),i.write(g)}for(var l=0,h=0;h<e.length;h++)l+=e[h].dataCount;if(g.getLengthInBits()>8*l)throw new Error("code length overflow. ("+g.getLengthInBits()+">"+8*l+")");for(g.getLengthInBits()+4<=8*l&&g.put(0,4);0!=g.getLengthInBits()%8;)g.putBit(!1);for(;;){if(g.getLengthInBits()>=8*l)break;if(g.put(b.PAD0,8),g.getLengthInBits()>=8*l)break;g.put(b.PAD1,8)}return b.createBytes(g,e)},b.createBytes=function(a,b){for(var c=0,d=0,e=0,g=new Array(b.length),h=new Array(b.length),j=0;j<b.length;j++){var k=b[j].dataCount,l=b[j].totalCount-k;d=Math.max(d,k),e=Math.max(e,l),g[j]=new Array(k);for(var m=0;m<g[j].length;m++)g[j][m]=255&a.buffer[m+c];c+=k;var n=f.getErrorCorrectPolynomial(l),o=new i(g[j],n.getLength()-1),p=o.mod(n);h[j]=new Array(n.getLength()-1);for(var m=0;m<h[j].length;m++){var q=m+p.getLength()-h[j].length;h[j][m]=q>=0?p.get(q):0}}for(var r=0,m=0;m<b.length;m++)r+=b[m].totalCount;for(var s=new Array(r),t=0,m=0;d>m;m++)for(var j=0;j<b.length;j++)m<g[j].length&&(s[t++]=g[j][m]);for(var m=0;e>m;m++)for(var j=0;j<b.length;j++)m<h[j].length&&(s[t++]=h[j][m]);return s};for(var c={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},d={L:1,M:0,Q:3,H:2},e={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},f={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;f.getBCHDigit(b)-f.getBCHDigit(f.G15)>=0;)b^=f.G15<<f.getBCHDigit(b)-f.getBCHDigit(f.G15);return(a<<10|b)^f.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;f.getBCHDigit(b)-f.getBCHDigit(f.G18)>=0;)b^=f.G18<<f.getBCHDigit(b)-f.getBCHDigit(f.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return f.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case e.PATTERN000:return 0==(b+c)%2;case e.PATTERN001:return 0==b%2;case e.PATTERN010:return 0==c%3;case e.PATTERN011:return 0==(b+c)%3;case e.PATTERN100:return 0==(Math.floor(b/2)+Math.floor(c/3))%2;case e.PATTERN101:return 0==b*c%2+b*c%3;case e.PATTERN110:return 0==(b*c%2+b*c%3)%2;case e.PATTERN111:return 0==(b*c%3+(b+c)%2)%2;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new i([1],0),c=0;a>c;c++)b=b.multiply(new i([1,g.gexp(c)],0));return b},getLengthInBits:function(a,b){if(b>=1&&10>b)switch(a){case c.MODE_NUMBER:return 10;case c.MODE_ALPHA_NUM:return 9;case c.MODE_8BIT_BYTE:return 8;case c.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(27>b)switch(a){case c.MODE_NUMBER:return 12;case c.MODE_ALPHA_NUM:return 11;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(41>b))throw new Error("type:"+b);switch(a){case c.MODE_NUMBER:return 14;case c.MODE_ALPHA_NUM:return 13;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;b>d;d++)for(var e=0;b>e;e++){for(var f=0,g=a.isDark(d,e),h=-1;1>=h;h++)if(!(0>d+h||d+h>=b))for(var i=-1;1>=i;i++)0>e+i||e+i>=b||(0!=h||0!=i)&&g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;b-1>d;d++)for(var e=0;b-1>e;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,(0==j||4==j)&&(c+=3)}for(var d=0;b>d;d++)for(var e=0;b-6>e;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;b>e;e++)for(var d=0;b-6>d;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;b>e;e++)for(var d=0;b>d;d++)a.isDark(d,e)&&k++;var l=Math.abs(100*k/b/b-50)/5;return c+=10*l}},g={glog:function(a){if(1>a)throw new Error("glog("+a+")");return g.LOG_TABLE[a]},gexp:function(a){for(;0>a;)a+=255;for(;a>=256;)a-=255;return g.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},h=0;8>h;h++)g.EXP_TABLE[h]=1<<h;for(var h=8;256>h;h++)g.EXP_TABLE[h]=g.EXP_TABLE[h-4]^g.EXP_TABLE[h-5]^g.EXP_TABLE[h-6]^g.EXP_TABLE[h-8];for(var h=0;255>h;h++)g.LOG_TABLE[g.EXP_TABLE[h]]=h;i.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),c=0;c<this.getLength();c++)for(var d=0;d<a.getLength();d++)b[c+d]^=g.gexp(g.glog(this.get(c))+g.glog(a.get(d)));return new i(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=g.glog(this.get(0))-g.glog(a.get(0)),c=new Array(this.getLength()),d=0;d<this.getLength();d++)c[d]=this.get(d);for(var d=0;d<a.getLength();d++)c[d]^=g.gexp(g.glog(a.get(d))+b);return new i(c,0).mod(a)}},j.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],j.getRSBlocks=function(a,b){var c=j.getRsBlockTable(a,b);if(void 0==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length/3,e=[],f=0;d>f;f++)for(var g=c[3*f+0],h=c[3*f+1],i=c[3*f+2],k=0;g>k;k++)e.push(new j(h,i));return e},j.getRsBlockTable=function(a,b){switch(b){case d.L:return j.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return j.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return j.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return j.RS_BLOCK_TABLE[4*(a-1)+3];default:return void 0}},k.prototype={get:function(a){var b=Math.floor(a/8);return 1==(1&this.buffer[b]>>>7-a%8)},put:function(a,b){for(var c=0;b>c;c++)this.putBit(1==(1&a>>>b-c-1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var l=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],o=function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){function g(a,b){var c=document.createElementNS("http://www.w3.org/2000/svg",a);for(var d in b)b.hasOwnProperty(d)&&c.setAttribute(d,b[d]);return c}var b=this._htOption,c=this._el,d=a.getModuleCount();Math.floor(b.width/d),Math.floor(b.height/d),this.clear();var h=g("svg",{viewBox:"0 0 "+String(d)+" "+String(d),width:"100%",height:"100%",fill:b.colorLight});h.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),c.appendChild(h),h.appendChild(g("rect",{fill:b.colorDark,width:"1",height:"1",id:"template"}));for(var i=0;d>i;i++)for(var j=0;d>j;j++)if(a.isDark(i,j)){var k=g("use",{x:String(i),y:String(j)});k.setAttributeNS("http://www.w3.org/1999/xlink","href","#template"),h.appendChild(k)}},a.prototype.clear=function(){for(;this._el.hasChildNodes();)this._el.removeChild(this._el.lastChild)},a}(),p="svg"===document.documentElement.tagName.toLowerCase(),q=p?o:m()?function(){function a(){this._elImage.src=this._elCanvas.toDataURL("image/png"),this._elImage.style.display="block",this._elCanvas.style.display="none"}function d(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&_fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};return d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",void 0}c._bSupportDataURI===!0&&c._fSuccess?c._fSuccess.call(c):c._bSupportDataURI===!1&&c._fFail&&c._fFail.call(c)}if(this._android&&this._android<=2.1){var b=1/window.devicePixelRatio,c=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,d,e,f,g,h,i,j){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*b;else"undefined"==typeof j&&(arguments[1]*=b,arguments[2]*=b,arguments[3]*=b,arguments[4]*=b);c.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=n(),this._htOption=b,this._elCanvas=document.createElement("canvas"),this._elCanvas.width=b.width,this._elCanvas.height=b.height,a.appendChild(this._elCanvas),this._el=a,this._oContext=this._elCanvas.getContext("2d"),this._bIsPainted=!1,this._elImage=document.createElement("img"),this._elImage.style.display="none",this._el.appendChild(this._elImage),this._bSupportDataURI=null};return e.prototype.draw=function(a){var b=this._elImage,c=this._oContext,d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e,h=Math.round(f),i=Math.round(g);b.style.display="none",this.clear();for(var j=0;e>j;j++)for(var k=0;e>k;k++){var l=a.isDark(j,k),m=k*f,n=j*g;c.strokeStyle=l?d.colorDark:d.colorLight,c.lineWidth=1,c.fillStyle=l?d.colorDark:d.colorLight,c.fillRect(m,n,f,g),c.strokeRect(Math.floor(m)+.5,Math.floor(n)+.5,h,i),c.strokeRect(Math.ceil(m)-.5,Math.ceil(n)-.5,h,i)}this._bIsPainted=!0},e.prototype.makeImage=function(){this._bIsPainted&&d.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){for(var b=this._htOption,c=this._el,d=a.getModuleCount(),e=Math.floor(b.width/d),f=Math.floor(b.height/d),g=['<table style="border:0;border-collapse:collapse;">'],h=0;d>h;h++){g.push("<tr>");for(var i=0;d>i;i++)g.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(a.isDark(h,i)?b.colorDark:b.colorLight)+';"></td>');g.push("</tr>")}g.push("</table>"),c.innerHTML=g.join("");var j=c.childNodes[0],k=(b.width-j.offsetWidth)/2,l=(b.height-j.offsetHeight)/2;k>0&&l>0&&(j.style.margin=l+"px "+k+"px")},a.prototype.clear=function(){this._el.innerHTML=""},a}();QRCode=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:d.H},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];"string"==typeof a&&(a=document.getElementById(a)),this._android=n(),this._el=a,this._oQRCode=null,this._oDrawing=new q(this._el,this._htOption),this._htOption.text&&this.makeCode(this._htOption.text)},QRCode.prototype.makeCode=function(a){this._oQRCode=new b(r(a,this._htOption.correctLevel),this._htOption.correctLevel),this._oQRCode.addData(a),this._oQRCode.make(),this._el.title=a,this._oDrawing.draw(this._oQRCode),this.makeImage()},QRCode.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},QRCode.prototype.clear=function(){this._oDrawing.clear()},QRCode.CorrectLevel=d}();</script>
+<script src="kcs-db.js?v=5"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0f1117;--surface:#1e2030;--surface2:#252840;--border:#2e3250;--border2:#3d4270;
+  --text:#e8eaf6;--text2:#9fa8da;--text3:#5c6bc0;
+  --accent:#6c63ff;--accent2:#8b80ff;--accent-bg:rgba(108,99,255,0.12);--accent-border:rgba(108,99,255,0.35);
+  --success:#00e676;--success-bg:rgba(0,230,118,0.1);--success-border:rgba(0,230,118,0.3);
+  --warning:#ffd740;--danger:#ff5252;--danger-bg:rgba(255,82,82,0.1);--danger-border:rgba(255,82,82,0.3);
+  --epaule:var(--accent);--epaule-bg:var(--accent-bg);--epaule-border:var(--accent-border);
+  --radius:10px;--radius-lg:16px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;}
+
+/* HEADER */
+.header{padding:16px 24px;background:linear-gradient(135deg,var(--surface),var(--surface2));border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20;}
+.logo{height:40px;width:auto;}
+.header-info{flex:1;}
+.header-title{font-size:16px;font-weight:700;color:var(--text);}
+.header-sub{font-size:11px;color:var(--text3);}
+.header-patient{text-align:right;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+
+/* NAV TABS */
+.nav-tabs{display:flex;gap:0;background:var(--surface);border-bottom:1px solid var(--border2);overflow-x:auto;position:sticky;top:72px;z-index:19;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{padding:12px 18px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
+.nav-tab.active{color:var(--epaule);border-bottom-color:var(--epaule);}
+.nav-tab:hover:not(.active){color:var(--text2);}
+
+/* PROGRESS */
+.progress-bar{height:3px;background:var(--border);}
+.progress-fill{height:100%;background:var(--epaule);transition:width 0.4s;border-radius:2px;}
+
+/* SECTIONS */
+.section{display:none;padding:20px 24px;max-width:900px;margin:0 auto;}
+.section.active{display:block;}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;}
+.card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.card-title svg{width:16px;height:16px;color:var(--epaule);flex-shrink:0;}
+
+/* FORM */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);}
+input[type=text],input[type=date],input[type=number],select,textarea{font-family:inherit;font-size:14px;color:var(--text);background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;width:100%;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--epaule);}
+.row{display:flex;gap:10px;flex-wrap:wrap;}
+.row .field{flex:1;min-width:140px;}
+
+/* TAG */
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;border:1px solid;margin-left:auto;}
+.tag-epaule{background:var(--epaule-bg);border-color:var(--epaule-border);color:var(--epaule);}
+.tag-success{background:var(--success-bg);border-color:var(--success-border);color:var(--success);}
+.tag-warning{background:rgba(255,215,64,0.1);border-color:rgba(255,215,64,0.3);color:var(--warning);}
+.tag-danger{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger);}
+
+/* CAM BTN */
+.btn-print{background:var(--accent-bg);color:var(--accent2);border-color:var(--accent-border);}
+display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:12px;font-family:inherit;transition:all 0.2s;flex-shrink:0;}
+.cam-btn:hover{background:var(--surface3,var(--surface2));color:var(--text);}
+.photos-galerie{display:none;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.photos-galerie.has-photos{display:flex;}
+
+
+.eva-group{display:flex;flex-direction:column;gap:10px;}
+.eva-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);}
+.eva-label{font-size:12px;font-weight:600;color:var(--text2);min-width:160px;}
+.eva-slider{flex:1;height:5px;accent-color:var(--epaule);}
+.eva-val{font-size:18px;font-weight:800;font-family:monospace;min-width:36px;text-align:center;}
+.eva-nt{padding:5px 10px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.eva-nt.active{background:var(--accent-bg);border-color:var(--accent-border);color:var(--accent2);}
+
+/* TESTS */
+.tests-table{width:100%;border-collapse:collapse;font-size:13px;}
+.tests-table th{text-align:left;padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);border-bottom:1px solid var(--border2);}
+.tests-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+.tests-table tr:last-child td{border-bottom:none;}
+.tests-table tr:hover td{background:rgba(255,255,255,0.02);}
+.test-name{font-weight:600;color:var(--text);}
+.test-info{font-size:11px;color:var(--text3);margin-top:2px;}
+.test-se{font-size:10px;color:var(--text3);}
+.result-btns{display:flex;gap:4px;}
+.rbtn{padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.rbtn.sel-neg{background:var(--success-bg);border-color:var(--success-border);color:var(--success);}
+.rbtn.sel-doul{background:rgba(255,215,64,0.1);border-color:rgba(255,215,64,0.3);color:var(--warning);}
+.rbtn.sel-pos{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger);}
+.rbtn.sel-nt{background:var(--accent-bg);border-color:var(--accent-border);color:var(--accent2);}
+.help-btn{width:20px;height:20px;border-radius:50%;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* MOBILITE */
+.mobil-table{width:100%;border-collapse:collapse;font-size:13px;}
+.mobil-table th{padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border2);text-align:center;}
+.mobil-table th:first-child{text-align:left;}
+.mobil-table td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center;}
+.mobil-table td:first-child{text-align:left;font-weight:600;font-size:12px;}
+.mobil-table tr:last-child td{border-bottom:none;}
+.mobil-input{width:70px;padding:5px 8px;font-size:13px;text-align:center;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:inherit;outline:none;}
+.mobil-input:focus{border-color:var(--epaule);}
+.deficit-cell{font-size:12px;font-weight:700;}
+
+/* SCORES */
+.score-display{text-align:center;padding:16px;background:var(--surface2);border-radius:var(--radius-lg);border:1px solid var(--border);}
+.score-val{font-size:36px;font-weight:800;font-family:monospace;}
+.score-label{font-size:11px;color:var(--text3);margin-top:4px;}
+.score-interp{font-size:12px;font-weight:600;margin-top:6px;}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+
+/* DASH OPTS */
+.dash-opts{display:flex;gap:6px;flex-wrap:wrap;}
+.dash-opt{flex:1;min-width:80px;padding:7px 6px;border:1px solid var(--border2);border-radius:var(--radius);text-align:center;cursor:pointer;font-size:11px;color:var(--text2);background:transparent;transition:all 0.15s;font-family:inherit;}
+.dash-opt.sel{background:var(--epaule-bg);border-color:var(--epaule-border);color:var(--epaule);font-weight:600;}
+
+/* DYNAMOMETRE */
+.dyn-table{width:100%;border-collapse:collapse;font-size:13px;}
+.dyn-table th{padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border2);text-align:center;}
+.dyn-table th:first-child{text-align:left;}
+.dyn-table td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center;}
+.dyn-table td:first-child{text-align:left;font-weight:600;font-size:12px;}
+.dyn-input{width:70px;padding:5px 8px;font-size:13px;text-align:center;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:inherit;outline:none;}
+
+/* ACCORDION */
+details.acc{margin-bottom:10px;border:1px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden;}
+details.acc summary{display:flex;align-items:center;gap:12px;padding:13px 18px;background:var(--surface2);cursor:pointer;list-style:none;user-select:none;transition:background 0.2s;}
+details.acc summary::-webkit-details-marker{display:none;}
+details.acc summary::marker{display:none;}
+details.acc summary:hover{background:var(--surface3);}
+details.acc[open]>summary{background:linear-gradient(135deg,var(--surface2),var(--surface3));border-bottom:1px solid var(--border2);}
+.acc-icon{width:30px;height:30px;border-radius:var(--radius);background:var(--accent-bg);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.acc-icon svg{width:15px;height:15px;color:var(--accent2);}
+.acc-info{flex:1;}
+.acc-title{font-size:13px;font-weight:600;color:var(--text);}
+.acc-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.acc-chev,.acc-chevron{width:18px;height:18px;color:var(--text3);transition:transform 0.3s;flex-shrink:0;}
+details.acc[open]>summary .acc-chev,details.acc[open]>summary .acc-chevron{transform:rotate(180deg);}
+.acc-body{padding:14px 16px 16px;background:var(--bg);}
+.acc-body .card{margin-bottom:12px;}
+.acc-body .card:last-child{margin-bottom:0;}
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:50;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.overlay-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;}
+.overlay-title{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--epaule);}
+.overlay-close{margin-top:16px;width:100%;padding:10px;border-radius:var(--radius);border:none;background:var(--surface2);color:var(--text2);font-size:13px;cursor:pointer;font-family:inherit;}
+
+/* CONCLUSION */
+.conclusion-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.concl-item{background:var(--surface2);border-radius:var(--radius);padding:12px 14px;border:1px solid var(--border);}
+.concl-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.concl-val{font-size:14px;font-weight:700;color:var(--text);}
+
+/* PRINT */
+.btn{padding:10px 18px;border-radius:var(--radius);border:none;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--epaule);color:#fff;}
+.btn-secondary{background:var(--surface2);color:var(--text2);border:1px solid var(--border2);}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border);}
+
+@media (max-width:600px){
+  .section{padding:14px 12px;}
+  .eva-row{flex-wrap:wrap;gap:8px;padding:10px;}
+  .eva-lbl{min-width:100%;flex-basis:100%;}
+  .eva-slider{flex:1;min-width:0;}
+  .row{flex-direction:column;}
+  .row .field{min-width:100%;}
+  .data-table{display:block;overflow-x:auto;white-space:nowrap;}
+  .tests-table{display:block;overflow-x:auto;white-space:nowrap;}
+  .header{padding:10px 14px;gap:10px;}
+  .logo{height:30px;}
+  .header-title{font-size:13px;}
+  .nav-tab{padding:9px 12px;font-size:11px;}
+  .nav{padding:12px 14px;}
+}
+@media print{
+  .nav-tabs,.header,.progress-bar{display:none!important;}
+  .section{display:block!important;padding:10px!important;}
+  body{background:#fff!important;color:#000!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <img class="logo" src="data:image/png;base64,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" alt="KCS">
+  <div class="header-info">
+    <div class="header-title">Bilan Epaule</div>
+    <div class="header-sub" id="header-patient-info"></div>
+    <div class="header-sub" id="section-label" style="color:var(--text2);font-weight:500;">Anamnèse & motif de consultation</div>
+  </div>
+  <div class="header-patient" id="header-date"></div>
+  <div class="header-patient" id="kcs-save-status" style="font-size:10px;opacity:0.7;"></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="goTo(0)">Anamnese</div>
+  <div class="nav-tab" onclick="goTo(1)">Douleur & Clinique</div>
+  <div class="nav-tab" onclick="goTo(2)">Tests specifiques</div>
+  <div class="nav-tab" onclick="goTo(3)">Mobilite & Force</div>
+  <div class="nav-tab" onclick="goTo(4)">Scores</div>
+  <div class="nav-tab" onclick="goTo(5)">RTP</div>
+  <div class="nav-tab" onclick="goTo(6)">Conclusion</div>
+</div>
+
+<!-- ═══════════════ SEC 0 — ANAMNESE ═══════════════ -->
+<div class="section active" id="sec0">
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div class="acc-info"><div class="acc-title">Identité du patient</div><div class="acc-sub">Nom, sport, niveau, métier</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Informations patient
+    </div>
+    <div class="row">
+      <div class="field"><label>Nom</label><input type="text" id="nom" oninput="updateHeader()"></div>
+      <div class="field"><label>Prenom</label><input type="text" id="prenom" oninput="updateHeader()"></div>
+      <div class="field"><label>Date de naissance</label><input type="date" id="ddn"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Sport / activite</label><input type="text" id="sport" placeholder="Football, natation, travail manuel..."></div>
+      <div class="field"><label>Metier</label><input type="text" id="metier" placeholder="Infirmier, maconnerie, bureau..."></div>
+      <div class="field"><label>Niveau de pratique</label>
+        <select id="niveau">
+          <option value="">— Selectionner —</option>
+          <option value="loisir">Loisir</option>
+          <option value="competition">Competition</option>
+          <option value="professionnel">Professionnel</option>
+          <option value="travail">Travail manuel</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Cote dominant</label>
+        <select id="dominance">
+          <option value="">— Selectionner —</option>
+          <option value="droit">Droit</option>
+          <option value="gauche">Gauche</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div></details>
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6M9 16h6M9 8h6M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg></div><div class="acc-info"><div class="acc-title">Motif de consultation</div><div class="acc-sub">Pathologie, côté, ancienneté, imagerie</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6M9 16h6M9 8h6M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>
+      Motif de consultation
+    </div>
+    <div class="row">
+      <div class="field"><label>Côté atteint</label>
+        <select id="cote" onchange="updateHeader()">
+          <option value="">— Sélectionner —</option>
+          <option value="droit">Droit</option>
+          <option value="gauche">Gauche</option>
+          <option value="bilateral">Bilatéral</option>
+        </select>
+      </div>
+      <div class="field"><label>Pathologie principale</label>
+        <select id="pathologie">
+          <option value="">— Selectionner —</option>
+          <optgroup label="Coiffe des rotateurs">
+            <option value="tendinopathie-coiffe">Tendinopathie de la coiffe</option>
+            <option value="rupture-coiffe">Rupture de la coiffe</option>
+            <option value="post-op-coiffe">Post-op coiffe</option>
+          </optgroup>
+          <optgroup label="Instabilite">
+            <option value="instabilite">Instabilite / luxation</option>
+            <option value="post-op-latarjet">Post-op Latarjet</option>
+            <option value="post-op-bankart">Post-op Bankart</option>
+          </optgroup>
+          <optgroup label="Autres">
+            <option value="capsulite">Capsulite retractile</option>
+            <option value="acromio">Conflit sous-acromial</option>
+            <option value="acromioclaviculaire">Acromioclaviculaire</option>
+            <option value="biceps">Tendinopathie bicipitale</option>
+            <option value="protese">Prothese totale d epaule</option>
+            <option value="autre">Autre</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field"><label>Date de début des symptômes</label><input type="date" id="date-debut"></div>
+      <div class="field"><label>Ancienneté</label>
+        <select id="anciennete">
+          <option value="">— Sélectionner —</option>
+          <option value="aigu">Aiguë (&lt; 6 semaines)</option>
+          <option value="subaigu">Subaiguë (6 sem – 3 mois)</option>
+          <option value="chronique">Chronique (&gt; 3 mois)</option>
+        </select>
+      </div>
+      <div class="field"><label>Mecanisme / contexte</label>
+        <select id="mecanisme">
+          <option value="">— Selectionner —</option>
+          <option value="trauma-direct">Traumatisme direct</option>
+          <option value="chute">Chute (appui main, epaule)</option>
+          <option value="surmenage">Surmenage / repetitif</option>
+          <option value="post-op">Post-operatoire</option>
+          <option value="spontane">Spontane / progressif</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Antecedents epaule</label>
+      <textarea id="antecedents" placeholder="Operations, infiltrations, kinesitherapie anterieure..." style="min-height:60px;resize:vertical;"></textarea>
+    </div>
+    <div class="field"><label>Imagerie disponible</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select id="imagerie" style="flex:1;">
+          <option value="">— Sélectionner —</option>
+          <option value="radio">Radiographie</option>
+          <option value="echo">Échographie</option>
+          <option value="irm">IRM</option>
+          <option value="radio-echo">Radio + Écho</option>
+          <option value="radio-irm">Radio + IRM</option>
+          <option value="toutes">Toutes</option>
+          <option value="aucune">Aucune</option>
+        </select>
+        <button class="cam-btn" onclick="ouvrirCamera()" title="Photographier le document d'imagerie">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+      </div>
+      <div class="photos-galerie" id="photos-container"></div>
+    </div>
+    <div class="field"><label>Traitements en cours</label>
+      <textarea id="traitements" placeholder="Antalgiques, AINS, infiltration recente..." style="min-height:50px;resize:vertical;"></textarea>
+    </div>
+  </div>
+</div></details>
+
+  <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+    <button class="btn btn-primary" onclick="goTo(1)">Suivant →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 1 — DOULEUR & CLINIQUE ═══════════════ -->
+<div class="section" id="sec1">
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2M12 8v4M12 16h.01"/></svg></div><div class="acc-info"><div class="acc-title">Évaluation de la douleur (EVA)</div><div class="acc-sub">Repos, mouvement, nuit, effort sportif</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2M12 8v4M12 16h.01"/></svg>
+      EVA — Echelle visuelle analogique
+      <span class="tag tag-epaule">0 = pas de douleur / 10 = max</span>
+    </div>
+    <div class="eva-group">
+      <div class="eva-item">
+        <span class="eva-label">Au repos</span>
+        <input type="range" class="eva-slider" min="0" max="10" step="1" value="0" id="eva-repos" oninput="setEva('eva-repos')">
+        <span class="eva-val" id="eva-repos-v" style="color:var(--success)">0</span>
+        <button class="eva-nt" id="eva-repos-nt" onclick="toggleNT('eva-repos')">NT</button>
+      </div>
+      <div class="eva-item">
+        <span class="eva-label">A l effort (mouvement)</span>
+        <input type="range" class="eva-slider" min="0" max="10" step="1" value="0" id="eva-effort" oninput="setEva('eva-effort')">
+        <span class="eva-val" id="eva-effort-v" style="color:var(--success)">0</span>
+        <button class="eva-nt" id="eva-effort-nt" onclick="toggleNT('eva-effort')">NT</button>
+      </div>
+      <div class="eva-item">
+        <span class="eva-label">La nuit</span>
+        <input type="range" class="eva-slider" min="0" max="10" step="1" value="0" id="eva-nuit" oninput="setEva('eva-nuit')">
+        <span class="eva-val" id="eva-nuit-v" style="color:var(--success)">0</span>
+        <button class="eva-nt" id="eva-nuit-nt" onclick="toggleNT('eva-nuit')">NT</button>
+      </div>
+      <div class="eva-item">
+        <span class="eva-label">A la palpation</span>
+        <input type="range" class="eva-slider" min="0" max="10" step="1" value="0" id="eva-palp" oninput="setEva('eva-palp')">
+        <span class="eva-val" id="eva-palp-v" style="color:var(--success)">0</span>
+        <button class="eva-nt" id="eva-palp-nt" onclick="toggleNT('eva-palp')">NT</button>
+      </div>
+      <div class="eva-item">
+        <span class="eva-label">Sport / activite</span>
+        <input type="range" class="eva-slider" min="0" max="10" step="1" value="0" id="eva-sport" oninput="setEva('eva-sport')">
+        <span class="eva-val" id="eva-sport-v" style="color:var(--success)">0</span>
+        <button class="eva-nt" id="eva-sport-nt" onclick="toggleNT('eva-sport')">NT</button>
+      </div>
+    </div>
+  </div>
+</div></details>
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div><div class="acc-info"><div class="acc-title">Examen clinique</div><div class="acc-sub">Attitude, palpation, instabilité, inspection</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      Examen clinique
+    </div>
+    <div class="row">
+      <div class="field"><label>Attitude antalgique</label>
+        <select id="attitude">
+          <option value="non">Non</option>
+          <option value="oui">Oui</option>
+        </select>
+      </div>
+      <div class="field"><label>Amyotrophie visible</label>
+        <select id="amyotrophie">
+          <option value="non">Non</option>
+          <option value="legere">Legere</option>
+          <option value="moderee">Moderee</option>
+          <option value="severe">Severe</option>
+        </select>
+      </div>
+      <div class="field"><label>Deformation</label>
+        <select id="deformation">
+          <option value="non">Non</option>
+          <option value="saillie-acromio">Saillie acromioclaviculaire</option>
+          <option value="asymetrie">Asymetrie</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Palpation douloureuse</label>
+      <textarea id="palpation" placeholder="Tendon du supra-epineux, gouttiere bicipitale, acromio-claviculaire, trapeze..." style="min-height:60px;resize:vertical;"></textarea>
+    </div>
+    <div class="row">
+      <div class="field"><label>Arc douloureux</label>
+        <select id="arc-douloureux">
+          <option value="">— Selectionner —</option>
+          <option value="absent">Absent</option>
+          <option value="60-120">Oui (60-120 deg)</option>
+          <option value="complet">Oui (arc complet)</option>
+        </select>
+      </div>
+      <div class="field"><label>Craquement / ressaut</label>
+        <select id="craquement">
+          <option value="non">Non</option>
+          <option value="oui">Oui</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div></details>
+
+  <div style="display:flex;justify-content:space-between;margin-top:8px;">
+    <button class="btn btn-secondary" onclick="goTo(0)">← Retour</button>
+    <button class="btn btn-primary" onclick="goTo(2)">Suivant →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 2 — TESTS SPECIFIQUES ═══════════════ -->
+<div class="section" id="sec2">
+
+  <!-- Tests coiffe -->
+  <details class="acc" open>
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M12 3a9 9 0 100 18A9 9 0 0012 3z"/></svg></div>
+      <div class="acc-info"><div class="acc-title">Tests coiffe des rotateurs</div><div class="acc-sub">Impingement, supra-epineux, infra-epineux, subscapulaire</div></div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <table class="tests-table">
+        <thead><tr><th>Test</th><th>Sensibilite/Specificite</th><th style="text-align:center">Cote atteint</th><th style="text-align:center">Cote sain</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="test-name">Neer <button class="help-btn" onclick="showHelp('neer')">?</button></div><div class="test-info">Conflit sous-acromial — bras eleve en RI</div></td>
+            <td class="test-se">Se 79% / Sp 53%</td>
+            <td><div class="result-btns" id="neer-att">
+              <button class="rbtn" onclick="selTest('neer-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('neer-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('neer-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('neer-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="neer-sain">
+              <button class="rbtn" onclick="selTest('neer-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('neer-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('neer-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('neer-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Hawkins-Kennedy <button class="help-btn" onclick="showHelp('hawkins')">?</button></div><div class="test-info">Flexion 90 + RI forcee — conflit</div></td>
+            <td class="test-se">Se 79% / Sp 59%</td>
+            <td><div class="result-btns" id="hawkins-att">
+              <button class="rbtn" onclick="selTest('hawkins-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('hawkins-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('hawkins-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('hawkins-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="hawkins-sain">
+              <button class="rbtn" onclick="selTest('hawkins-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('hawkins-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('hawkins-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('hawkins-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Jobe (Empty Can) <button class="help-btn" onclick="showHelp('jobe')">?</button></div><div class="test-info">Abduction 90 + RE 45 — supra-epineux</div></td>
+            <td class="test-se">Se 69% / Sp 66%</td>
+            <td><div class="result-btns" id="jobe-att">
+              <button class="rbtn" onclick="selTest('jobe-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('jobe-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('jobe-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('jobe-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="jobe-sain">
+              <button class="rbtn" onclick="selTest('jobe-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('jobe-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('jobe-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('jobe-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Full Can <button class="help-btn" onclick="showHelp('fullcan')">?</button></div><div class="test-info">Abduction 90 + RE 45 pouce vers haut</div></td>
+            <td class="test-se">Se 66% / Sp 64%</td>
+            <td><div class="result-btns" id="fullcan-att">
+              <button class="rbtn" onclick="selTest('fullcan-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('fullcan-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('fullcan-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('fullcan-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="fullcan-sain">
+              <button class="rbtn" onclick="selTest('fullcan-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('fullcan-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('fullcan-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('fullcan-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Patte (Lag Sign) <button class="help-btn" onclick="showHelp('patte')">?</button></div><div class="test-info">RE contre resistance — infra-epineux/petit rond</div></td>
+            <td class="test-se">Se 89% / Sp 98%</td>
+            <td><div class="result-btns" id="patte-att">
+              <button class="rbtn" onclick="selTest('patte-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('patte-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('patte-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('patte-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="patte-sain">
+              <button class="rbtn" onclick="selTest('patte-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('patte-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('patte-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('patte-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Gerber (Lift-off) <button class="help-btn" onclick="showHelp('gerber')">?</button></div><div class="test-info">RI active derriere le dos — subscapulaire</div></td>
+            <td class="test-se">Se 92% / Sp 87%</td>
+            <td><div class="result-btns" id="gerber-att">
+              <button class="rbtn" onclick="selTest('gerber-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('gerber-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('gerber-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('gerber-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="gerber-sain">
+              <button class="rbtn" onclick="selTest('gerber-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('gerber-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('gerber-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('gerber-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Bear Hug <button class="help-btn" onclick="showHelp('bearhug')">?</button></div><div class="test-info">Main sur epaule opposee — subscapulaire haut</div></td>
+            <td class="test-se">Se 60% / Sp 92%</td>
+            <td><div class="result-btns" id="bearhug-att">
+              <button class="rbtn" onclick="selTest('bearhug-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('bearhug-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('bearhug-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('bearhug-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="bearhug-sain">
+              <button class="rbtn" onclick="selTest('bearhug-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('bearhug-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('bearhug-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('bearhug-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Tests instabilite -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="acc-info"><div class="acc-title">Tests instabilite</div><div class="acc-sub">Apprehension, relocation, sulcus, tiroirs</div></div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <table class="tests-table">
+        <thead><tr><th>Test</th><th>Sensibilite/Specificite</th><th style="text-align:center">Cote atteint</th><th style="text-align:center">Cote sain</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="test-name">Apprehension <button class="help-btn" onclick="showHelp('apprehension')">?</button></div><div class="test-info">Abd 90 + RE progressive — instabilite anterieure</div></td>
+            <td class="test-se">Se 72% / Sp 96%</td>
+            <td><div class="result-btns" id="appreh-att">
+              <button class="rbtn" onclick="selTest('appreh-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('appreh-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('appreh-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('appreh-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="appreh-sain">
+              <button class="rbtn" onclick="selTest('appreh-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('appreh-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('appreh-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Relocation (Jobe) <button class="help-btn" onclick="showHelp('relocation')">?</button></div><div class="test-info">Appui posterieur tete humerale — soulagement</div></td>
+            <td class="test-se">Se 81% / Sp 90%</td>
+            <td><div class="result-btns" id="reloc-att">
+              <button class="rbtn" onclick="selTest('reloc-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('reloc-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('reloc-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('reloc-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="reloc-sain">
+              <button class="rbtn" onclick="selTest('reloc-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('reloc-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('reloc-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Sulcus Sign <button class="help-btn" onclick="showHelp('sulcus')">?</button></div><div class="test-info">Traction vers le bas bras le long du corps</div></td>
+            <td class="test-se">Se 62% / Sp 88%</td>
+            <td><div class="result-btns" id="sulcus-att">
+              <button class="rbtn" onclick="selTest('sulcus-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('sulcus-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('sulcus-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('sulcus-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="sulcus-sain">
+              <button class="rbtn" onclick="selTest('sulcus-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('sulcus-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('sulcus-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Tiroir anterieur <button class="help-btn" onclick="showHelp('tiroir-ant')">?</button></div><div class="test-info">Translation anterieure tete humerale</div></td>
+            <td class="test-se">Se 53% / Sp 85%</td>
+            <td><div class="result-btns" id="tiroir-ant-att">
+              <button class="rbtn" onclick="selTest('tiroir-ant-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('tiroir-ant-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('tiroir-ant-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('tiroir-ant-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="tiroir-ant-sain">
+              <button class="rbtn" onclick="selTest('tiroir-ant-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('tiroir-ant-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('tiroir-ant-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Tests biceps / SLAP -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12M6 15a6 6 0 0012 0V3"/></svg></div>
+      <div class="acc-info"><div class="acc-title">Tests biceps & SLAP</div><div class="acc-sub">Speed, Yergason, O Brien, Biceps Load</div></div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <table class="tests-table">
+        <thead><tr><th>Test</th><th>Sensibilite/Specificite</th><th style="text-align:center">Cote atteint</th><th style="text-align:center">Cote sain</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="test-name">Speed <button class="help-btn" onclick="showHelp('speed')">?</button></div><div class="test-info">Flexion resistee paume vers haut — gouttiere bicipitale</div></td>
+            <td class="test-se">Se 69% / Sp 66%</td>
+            <td><div class="result-btns" id="speed-att">
+              <button class="rbtn" onclick="selTest('speed-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('speed-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('speed-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('speed-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="speed-sain">
+              <button class="rbtn" onclick="selTest('speed-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('speed-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('speed-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('speed-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">Yergason <button class="help-btn" onclick="showHelp('yergason')">?</button></div><div class="test-info">Supination resistee coude a 90 — LPB</div></td>
+            <td class="test-se">Se 43% / Sp 79%</td>
+            <td><div class="result-btns" id="yergas-att">
+              <button class="rbtn" onclick="selTest('yergas-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('yergas-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('yergas-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('yergas-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="yergas-sain">
+              <button class="rbtn" onclick="selTest('yergas-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('yergas-sain','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('yergas-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('yergas-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+          <tr>
+            <td><div class="test-name">O Brien (Active Compression) <button class="help-btn" onclick="showHelp('obrien')">?</button></div><div class="test-info">Flexion 90 + add horiz + RI vs RE — SLAP</div></td>
+            <td class="test-se">Se 78% / Sp 91%</td>
+            <td><div class="result-btns" id="obrien-att">
+              <button class="rbtn" onclick="selTest('obrien-att','neg')">—</button>
+              <button class="rbtn" onclick="selTest('obrien-att','doul')">Doul.</button>
+              <button class="rbtn" onclick="selTest('obrien-att','pos')">+</button>
+              <button class="rbtn" onclick="selTest('obrien-att','nt')">NT</button>
+            </div></td>
+            <td><div class="result-btns" id="obrien-sain">
+              <button class="rbtn" onclick="selTest('obrien-sain','neg')">—</button>
+              <button class="rbtn" onclick="selTest('obrien-sain','pos')">+</button>
+              <button class="rbtn" onclick="selTest('obrien-sain','nt')">NT</button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <div style="display:flex;justify-content:space-between;margin-top:8px;">
+    <button class="btn btn-secondary" onclick="goTo(1)">← Retour</button>
+    <button class="btn btn-primary" onclick="goTo(3)">Suivant →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 3 — MOBILITE & FORCE ═══════════════ -->
+<div class="section" id="sec3">
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2zM2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div><div class="acc-info"><div class="acc-title">Amplitudes articulaires</div><div class="acc-sub">Flexion, abduction, rotations — sain vs atteint</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2zM2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+      Amplitudes articulaires (en degres)
+    </div>
+    <table class="mobil-table">
+      <thead>
+        <tr>
+          <th>Mouvement</th>
+          <th>Normal</th>
+          <th>Cote sain</th>
+          <th>Cote atteint</th>
+          <th>Deficit %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Flexion anterieure</td><td style="color:var(--text3)">0-180</td>
+          <td><input class="mobil-input" type="number" id="mob-flex-sain" placeholder="180" oninput="calcDeficit('mob-flex')"></td>
+          <td><input class="mobil-input" type="number" id="mob-flex-att" placeholder="180" oninput="calcDeficit('mob-flex')"></td>
+          <td class="deficit-cell" id="mob-flex-def">—</td>
+        </tr>
+        <tr>
+          <td>Abduction</td><td style="color:var(--text3)">0-180</td>
+          <td><input class="mobil-input" type="number" id="mob-abd-sain" placeholder="180" oninput="calcDeficit('mob-abd')"></td>
+          <td><input class="mobil-input" type="number" id="mob-abd-att" placeholder="180" oninput="calcDeficit('mob-abd')"></td>
+          <td class="deficit-cell" id="mob-abd-def">—</td>
+        </tr>
+        <tr>
+          <td>Rotation externe (RE1)</td><td style="color:var(--text3)">0-60</td>
+          <td><input class="mobil-input" type="number" id="mob-re1-sain" placeholder="60" oninput="calcDeficit('mob-re1')"></td>
+          <td><input class="mobil-input" type="number" id="mob-re1-att" placeholder="60" oninput="calcDeficit('mob-re1')"></td>
+          <td class="deficit-cell" id="mob-re1-def">—</td>
+        </tr>
+        <tr>
+          <td>Rotation externe (RE2)</td><td style="color:var(--text3)">0-90</td>
+          <td><input class="mobil-input" type="number" id="mob-re2-sain" placeholder="90" oninput="calcDeficit('mob-re2')"></td>
+          <td><input class="mobil-input" type="number" id="mob-re2-att" placeholder="90" oninput="calcDeficit('mob-re2')"></td>
+          <td class="deficit-cell" id="mob-re2-def">—</td>
+        </tr>
+        <tr>
+          <td>Rotation interne (main dans le dos)</td><td style="color:var(--text3)">T7-T10</td>
+          <td>
+            <select id="mob-ri-sain" style="width:90px;font-size:12px;padding:5px 6px;">
+              <option value="">—</option>
+              <option>T12</option><option>T10</option><option>T9</option><option>T8</option><option>T7</option><option>T6</option><option>T5</option><option>T4</option>
+            </select>
+          </td>
+          <td>
+            <select id="mob-ri-att" style="width:90px;font-size:12px;padding:5px 6px;">
+              <option value="">—</option>
+              <option>T12</option><option>T10</option><option>T9</option><option>T8</option><option>T7</option><option>T6</option><option>T5</option><option>T4</option>
+            </select>
+          </td>
+          <td class="deficit-cell">—</td>
+        </tr>
+        <tr>
+          <td>Extension</td><td style="color:var(--text3)">0-60</td>
+          <td><input class="mobil-input" type="number" id="mob-ext-sain" placeholder="60" oninput="calcDeficit('mob-ext')"></td>
+          <td><input class="mobil-input" type="number" id="mob-ext-att" placeholder="60" oninput="calcDeficit('mob-ext')"></td>
+          <td class="deficit-cell" id="mob-ext-def">—</td>
+        </tr>
+        <tr>
+          <td>Adduction horizontale</td><td style="color:var(--text3)">0-130</td>
+          <td><input class="mobil-input" type="number" id="mob-add-sain" placeholder="130" oninput="calcDeficit('mob-add')"></td>
+          <td><input class="mobil-input" type="number" id="mob-add-att" placeholder="130" oninput="calcDeficit('mob-add')"></td>
+          <td class="deficit-cell" id="mob-add-def">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div></details>
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div><div class="acc-info"><div class="acc-title">Force musculaire — Dynamomètre</div><div class="acc-sub">3 essais / meilleure valeur — sain vs atteint</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+      Force musculaire — Dynamometre (kg)
+      <span class="tag tag-epaule">3 essais / meilleure valeur</span>
+    </div>
+    <table class="dyn-table">
+      <thead>
+        <tr>
+          <th>Groupe musculaire</th>
+          <th>Cote sain (kg)</th>
+          <th>Cote atteint (kg)</th>
+          <th>Deficit %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rotateurs externes</td>
+          <td><input class="dyn-input" type="number" id="dyn-re-sain" step="0.1" oninput="calcDynDeficit('dyn-re')"></td>
+          <td><input class="dyn-input" type="number" id="dyn-re-att" step="0.1" oninput="calcDynDeficit('dyn-re')"></td>
+          <td class="deficit-cell" id="dyn-re-def">—</td>
+        </tr>
+        <tr>
+          <td>Rotateurs internes</td>
+          <td><input class="dyn-input" type="number" id="dyn-ri-sain" step="0.1" oninput="calcDynDeficit('dyn-ri')"></td>
+          <td><input class="dyn-input" type="number" id="dyn-ri-att" step="0.1" oninput="calcDynDeficit('dyn-ri')"></td>
+          <td class="deficit-cell" id="dyn-ri-def">—</td>
+        </tr>
+        <tr>
+          <td>Abducteurs (deltoid)</td>
+          <td><input class="dyn-input" type="number" id="dyn-abd-sain" step="0.1" oninput="calcDynDeficit('dyn-abd')"></td>
+          <td><input class="dyn-input" type="number" id="dyn-abd-att" step="0.1" oninput="calcDynDeficit('dyn-abd')"></td>
+          <td class="deficit-cell" id="dyn-abd-def">—</td>
+        </tr>
+        <tr>
+          <td>Flexion (avant)</td>
+          <td><input class="dyn-input" type="number" id="dyn-flex-sain" step="0.1" oninput="calcDynDeficit('dyn-flex')"></td>
+          <td><input class="dyn-input" type="number" id="dyn-flex-att" step="0.1" oninput="calcDynDeficit('dyn-flex')"></td>
+          <td class="deficit-cell" id="dyn-flex-def">—</td>
+        </tr>
+        <tr>
+          <td>Ratio RE/RI</td>
+          <td colspan="2" style="text-align:center;font-size:11px;color:var(--text3);">Calcule automatiquement</td>
+          <td class="deficit-cell" id="dyn-ratio">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;">
+      <div class="field"><label>Notes dynamometre</label>
+        <textarea id="dyn-notes" placeholder="Position de mesure, protocole, observations..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </div>
+</div></details>
+
+  <div style="display:flex;justify-content:space-between;margin-top:8px;">
+    <button class="btn btn-secondary" onclick="goTo(2)">← Retour</button>
+    <button class="btn btn-primary" onclick="goTo(4)">Suivant →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 4 — SCORES ═══════════════ -->
+<div class="section" id="sec4">
+
+  <!-- QR CODE -->
+  <details class="acc" open>
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="5" y="5" width="3" height="3"/><rect x="16" y="5" width="3" height="3"/><rect x="5" y="16" width="3" height="3"/><path d="M14 14h3v3h-3zM17 17h3v3h-3zM14 17h.01M17 14h.01"/></svg></div>
+      <div class="acc-info"><div class="acc-title">Questionnaire patient — QR Code</div><div class="acc-sub">Le patient remplit DASH, Oxford, WOSI sur son telephone</div></div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Questionnaire patient
+          <span class="tag tag-epaule">Compatible telephone</span>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);display:block;margin-bottom:8px;">URL GitHub Pages du questionnaire patient</label>
+          
+          <div style="font-size:12px;color:var(--text3);margin-top:8px;">Le patient scanne ce code avec son telephone</div>
+        </div>
+        <div style="border-top:1px solid var(--border2);padding-top:14px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);margin-bottom:8px;">Scanner le QR du patient ou coller le code KCS1:</div>
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <textarea id="kcs-code-epaule" placeholder="Scannez ou collez le code KCS1:..." style="flex:1;font-family:monospace;font-size:11px;padding:9px 12px;min-height:60px;resize:vertical;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);outline:none;" oninput="checkCode_epaule()"></textarea>
+            <button id="import-btn-epaule" onclick="importerCode_epaule()" class="btn btn-primary" style="padding:9px 12px;white-space:nowrap;opacity:0.4;pointer-events:none;font-size:12px;">Import</button>
+          </div>
+          <div id="import-status-epaule" style="margin-top:8px;font-size:12px;color:var(--text3);min-height:16px;"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- DASH -->
+  <details class="acc" open>
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">QuickDASH — Disabilities of the Arm, Shoulder and Hand</div>
+        <div class="acc-sub">11 questions — score /100 (0 = aucun handicap, 100 = handicap max)</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div id="dash-questions"></div>
+      <div class="score-grid" style="margin-top:14px;">
+        <div class="score-display">
+          <div class="score-val" id="dash-score" style="color:var(--text3)">—</div>
+          <div class="score-label">QuickDASH /100</div>
+          <div class="score-interp" id="dash-interp"></div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px;">Seuil MCID (changement minimal cliniquement important) : 15 points</div>
+    </div>
+  </details>
+
+  <!-- Oxford Shoulder -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">Oxford Shoulder Score (OSS)</div>
+        <div class="acc-sub">12 questions — score /48 (48 = meilleure fonction)</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div id="oss-questions"></div>
+      <div class="score-grid" style="margin-top:14px;">
+        <div class="score-display">
+          <div class="score-val" id="oss-score" style="color:var(--text3)">—</div>
+          <div class="score-label">Oxford Shoulder /48</div>
+          <div class="score-interp" id="oss-interp"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- WOSI -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">WOSI — Western Ontario Shoulder Instability Index</div>
+        <div class="acc-sub">21 questions EVA — score /2100 (0 = aucun symptome)</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div id="wosi-questions"></div>
+      <div class="score-grid" style="margin-top:14px;">
+        <div class="score-display">
+          <div class="score-val" id="wosi-score" style="color:var(--text3)">—</div>
+          <div class="score-label">WOSI /2100</div>
+          <div class="score-interp" id="wosi-interp"></div>
+        </div>
+        <div class="score-display">
+          <div class="score-val" id="wosi-pct" style="color:var(--text3)">—</div>
+          <div class="score-label">WOSI %</div>
+          <div class="score-interp" id="wosi-pct-interp"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div style="display:flex;justify-content:space-between;margin-top:8px;">
+    <button class="btn btn-secondary" onclick="goTo(3)">← Retour</button>
+    <button class="btn btn-primary" onclick="goTo(5)">Suivant →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 5 — RTP ═══════════════ -->
+<div class="section" id="sec5">
+
+  <!-- CKCUEST -->
+  <details class="acc" open>
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">CKCUEST — Closed Kinetic Chain Upper Extremity Stability Test</div>
+        <div class="acc-sub">15 secondes — nombre de touches croisees — LSI cote atteint / cote sain</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.7;border:1px solid var(--border);">
+        <strong style="color:var(--epaule);">Protocole :</strong> Patient en position de pompe (planche), mains espacees de 90 cm (largeur standard). En 15 secondes, toucher alternativement la main opposee le plus grand nombre de fois possible. 3 essais avec 45 sec de repos. Prendre la meilleure valeur.<br>
+        <strong style="color:var(--epaule);">Seuil RTP :</strong> LSI ≥ 90% | Score normalise ≥ 21 touches/15 sec chez le sportif
+      </div>
+      <table class="mobil-table">
+        <thead><tr><th>Essai</th><th style="text-align:center">Cote sain</th><th style="text-align:center">Cote atteint</th></tr></thead>
+        <tbody>
+          <tr><td>Essai 1</td>
+            <td><input class="mobil-input" type="number" id="ckc-s1-sain" placeholder="ex: 23" oninput="calcCKC()"></td>
+            <td><input class="mobil-input" type="number" id="ckc-s1-att" placeholder="ex: 20" oninput="calcCKC()"></td>
+          </tr>
+          <tr><td>Essai 2</td>
+            <td><input class="mobil-input" type="number" id="ckc-s2-sain" placeholder="ex: 24" oninput="calcCKC()"></td>
+            <td><input class="mobil-input" type="number" id="ckc-s2-att" placeholder="ex: 21" oninput="calcCKC()"></td>
+          </tr>
+          <tr><td>Essai 3</td>
+            <td><input class="mobil-input" type="number" id="ckc-s3-sain" placeholder="ex: 25" oninput="calcCKC()"></td>
+            <td><input class="mobil-input" type="number" id="ckc-s3-att" placeholder="ex: 22" oninput="calcCKC()"></td>
+          </tr>
+          <tr style="border-top:2px solid var(--border2);">
+            <td><strong>Meilleure valeur</strong></td>
+            <td style="text-align:center;font-weight:700;" id="ckc-best-sain">—</td>
+            <td style="text-align:center;font-weight:700;" id="ckc-best-att">—</td>
+          </tr>
+          <tr>
+            <td><strong>LSI</strong></td>
+            <td colspan="2" style="text-align:center;">
+              <span class="deficit-cell" id="ckc-lsi">—</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:12px;"><label>Notes CKCUEST</label>
+        <textarea id="ckc-notes" placeholder="Compensation, douleur, arret premature..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- UQYBT -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">UQYBT — Upper Quarter Y Balance Test</div>
+        <div class="acc-sub">3 directions — normalise par longueur membre — LSI cote atteint / sain</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.7;border:1px solid var(--border);">
+        <strong style="color:var(--epaule);">Protocole :</strong> Patient en appui unipodal sur une main (pompe). Atteinte de la main libre dans 3 directions : <strong>Mediale (M)</strong>, <strong>Infero-laterale (IL)</strong>, <strong>Supero-laterale (SL)</strong>. 3 essais par direction, meilleure valeur retenue. Normaliser par la longueur du membre superieur (LMS = acromion → bout du majeur).<br>
+        <strong style="color:var(--epaule);">Score composite :</strong> (M + IL + SL) / (3 × LMS) × 100 | <strong>Seuil RTP :</strong> LSI ≥ 90%
+      </div>
+      <div class="row" style="margin-bottom:12px;">
+        <div class="field">
+          <label>Longueur membre superieur SAIN (cm)</label>
+          <input class="mobil-input" type="number" id="uqy-lms-sain" placeholder="ex: 72" oninput="calcUQYBT()" style="width:100%;">
+        </div>
+        <div class="field">
+          <label>Longueur membre superieur ATTEINT (cm)</label>
+          <input class="mobil-input" type="number" id="uqy-lms-att" placeholder="ex: 72" oninput="calcUQYBT()" style="width:100%;">
+        </div>
+      </div>
+      <table class="mobil-table">
+        <thead><tr><th>Direction</th><th style="text-align:center">Sain (cm)</th><th style="text-align:center">Atteint (cm)</th><th style="text-align:center">% LMS sain</th><th style="text-align:center">% LMS att</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mediale</strong></td>
+            <td><input class="mobil-input" type="number" id="uqy-m-sain" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td><input class="mobil-input" type="number" id="uqy-m-att" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td style="text-align:center;" id="uqy-m-pct-sain">—</td>
+            <td style="text-align:center;" id="uqy-m-pct-att">—</td>
+          </tr>
+          <tr><td><strong>Infero-lat.</strong></td>
+            <td><input class="mobil-input" type="number" id="uqy-il-sain" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td><input class="mobil-input" type="number" id="uqy-il-att" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td style="text-align:center;" id="uqy-il-pct-sain">—</td>
+            <td style="text-align:center;" id="uqy-il-pct-att">—</td>
+          </tr>
+          <tr><td><strong>Supero-lat.</strong></td>
+            <td><input class="mobil-input" type="number" id="uqy-sl-sain" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td><input class="mobil-input" type="number" id="uqy-sl-att" placeholder="cm" oninput="calcUQYBT()"></td>
+            <td style="text-align:center;" id="uqy-sl-pct-sain">—</td>
+            <td style="text-align:center;" id="uqy-sl-pct-att">—</td>
+          </tr>
+          <tr style="border-top:2px solid var(--border2);">
+            <td><strong>Score composite</strong></td>
+            <td colspan="2" style="text-align:center;">
+              Sain : <span id="uqy-comp-sain" style="font-weight:700;">—</span> &nbsp;|&nbsp; Att : <span id="uqy-comp-att" style="font-weight:700;">—</span>
+            </td>
+            <td colspan="2" style="text-align:center;">
+              LSI : <span class="deficit-cell" id="uqy-lsi">—</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:12px;"><label>Notes UQYBT</label>
+        <textarea id="uqy-notes" placeholder="Perte d equilibre, compensation, douleur..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- PSET — Tests endurance Olds 2019 -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">Tests d endurance coiffe (Olds 2019)</div>
+        <div class="acc-sub">6 tests retenus — maximum de repetitions — LSI cote atteint / sain</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.7;border:1px solid var(--border);">
+        <strong style="color:var(--epaule);">Reference :</strong> Olds 2019 — 8 tests faciles a pratiquer en cabinet, bonne reproductibilite. 2 exclus pour effet d'apprentissage. <strong>Objectif : maximum de repetitions a chaque test.</strong>
+      </div>
+      <table class="mobil-table">
+        <thead><tr><th>Test</th><th>Description</th><th style="text-align:center">Sain</th><th style="text-align:center">Atteint</th><th style="text-align:center">LSI</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Ball ABD-ER</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Ballon 3 kg en chaine ouverte — depuis coude flechit jusqu'a abd epaule 90° coude etendu, puis overhead</td>
+            <td><input class="mobil-input" type="number" id="pset1-sain" oninput="calcPSET(1)"></td>
+            <td><input class="mobil-input" type="number" id="pset1-att" oninput="calcPSET(1)"></td>
+            <td class="deficit-cell" id="pset1-lsi">—</td>
+          </tr>
+          <tr>
+            <td><strong>2. Prone IR</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Decubitus ventral, epaule 90° abd, rotation interne contre resistance du poids du segment</td>
+            <td><input class="mobil-input" type="number" id="pset2-sain" oninput="calcPSET(2)"></td>
+            <td><input class="mobil-input" type="number" id="pset2-att" oninput="calcPSET(2)"></td>
+            <td class="deficit-cell" id="pset2-lsi">—</td>
+          </tr>
+          <tr>
+            <td><strong>3. Side-lying ER</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Decubitus lateral, coude flechit 90°, rotation externe active — max reps</td>
+            <td><input class="mobil-input" type="number" id="pset3-sain" oninput="calcPSET(3)"></td>
+            <td><input class="mobil-input" type="number" id="pset3-att" oninput="calcPSET(3)"></td>
+            <td class="deficit-cell" id="pset3-lsi">—</td>
+          </tr>
+          <tr>
+            <td><strong>4. Shoulder Press</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Debout ou assis — presse epaule bilaterale jusqu'a extension complete — charge standardisee</td>
+            <td><input class="mobil-input" type="number" id="pset4-sain" oninput="calcPSET(4)"></td>
+            <td><input class="mobil-input" type="number" id="pset4-att" oninput="calcPSET(4)"></td>
+            <td class="deficit-cell" id="pset4-lsi">—</td>
+          </tr>
+          <tr>
+            <td><strong>5. Push-up</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Pompes standard — maximum de repetitions en maintenant alignement</td>
+            <td><input class="mobil-input" type="number" id="pset5-sain" oninput="calcPSET(5)"></td>
+            <td><input class="mobil-input" type="number" id="pset5-att" oninput="calcPSET(5)"></td>
+            <td class="deficit-cell" id="pset5-lsi">—</td>
+          </tr>
+          <tr>
+            <td><strong>6. Prone T</strong></td>
+            <td style="font-size:11px;color:var(--text3);">Decubitus ventral, abduction epaule 90° (position T), maintien isometrique — max reps a 3 sec</td>
+            <td><input class="mobil-input" type="number" id="pset6-sain" oninput="calcPSET(6)"></td>
+            <td><input class="mobil-input" type="number" id="pset6-att" oninput="calcPSET(6)"></td>
+            <td class="deficit-cell" id="pset6-lsi">—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:12px;"><label>Notes tests endurance</label>
+        <textarea id="pset-notes" placeholder="Fatigue, compensation, douleur, protocole utilise..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- Line Hops -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">Line Hops — Planche ventrale sur une main</div>
+        <div class="acc-sub">Maximum de repetitions en sautillant de part et d autre d une ligne</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.7;border:1px solid var(--border);">
+        <strong style="color:var(--epaule);">Protocole :</strong> Position de planche ventrale sur une main, bras tendu. Faire le maximum de repetitions en sautillant de part et d'autre d'une ligne de tape placee au sol. <strong>Tape standard de 3 cm.</strong> Compter le nombre de passages de ligne en un temps donne (15 ou 30 sec selon protocole).
+      </div>
+      <table class="mobil-table">
+        <thead><tr><th>Essai</th><th style="text-align:center">Main saine</th><th style="text-align:center">Main atteinte</th></tr></thead>
+        <tbody>
+          <tr><td>Essai 1</td>
+            <td><input class="mobil-input" type="number" id="lh-s1-sain" placeholder="reps" oninput="calcLinHops()"></td>
+            <td><input class="mobil-input" type="number" id="lh-s1-att" placeholder="reps" oninput="calcLinHops()"></td>
+          </tr>
+          <tr><td>Essai 2</td>
+            <td><input class="mobil-input" type="number" id="lh-s2-sain" placeholder="reps" oninput="calcLinHops()"></td>
+            <td><input class="mobil-input" type="number" id="lh-s2-att" placeholder="reps" oninput="calcLinHops()"></td>
+          </tr>
+          <tr><td>Essai 3</td>
+            <td><input class="mobil-input" type="number" id="lh-s3-sain" placeholder="reps" oninput="calcLinHops()"></td>
+            <td><input class="mobil-input" type="number" id="lh-s3-att" placeholder="reps" oninput="calcLinHops()"></td>
+          </tr>
+          <tr style="border-top:2px solid var(--border2);">
+            <td><strong>Meilleure valeur</strong></td>
+            <td style="text-align:center;font-weight:700;" id="lh-best-sain">—</td>
+            <td style="text-align:center;font-weight:700;" id="lh-best-att">—</td>
+          </tr>
+          <tr>
+            <td><strong>LSI</strong></td>
+            <td colspan="2" style="text-align:center;"><span class="deficit-cell" id="lh-lsi">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:12px;"><label>Notes Line Hops</label>
+        <textarea id="lh-notes" placeholder="Temps utilise, douleur, perte de position..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- USSP — Unilateral Seated Shot Put -->
+  <details class="acc">
+    <summary>
+      <div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+      <div class="acc-info">
+        <div class="acc-title">USSP — Unilateral Seated Shot Put Test</div>
+        <div class="acc-sub">Lancer assis dos au mur — distance en cm — LSI 5-10% faveur dominant</div>
+      </div>
+      <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="acc-body">
+      <div style="background:var(--surface2);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.7;border:1px solid var(--border);">
+        <strong style="color:var(--epaule);">Protocole (Chmielewski 2014 / Riemann 2018) :</strong> Patient assis par terre, jambes tendues, dos au mur. Lancer un ballon le plus loin possible d'une seule main. 3 essais par cote, meilleure valeur retenue.<br>
+        <strong style="color:var(--epaule);">Norme :</strong> 5 a 10% de difference en faveur du cote dominant est normal. LSI ≥ 90% attendu apres readaptation.
+      </div>
+      <table class="mobil-table">
+        <thead><tr><th>Essai</th><th style="text-align:center">Cote sain (cm)</th><th style="text-align:center">Cote atteint (cm)</th></tr></thead>
+        <tbody>
+          <tr><td>Essai 1</td>
+            <td><input class="mobil-input" type="number" id="ussp-s1-sain" placeholder="cm" oninput="calcUSSP()"></td>
+            <td><input class="mobil-input" type="number" id="ussp-s1-att" placeholder="cm" oninput="calcUSSP()"></td>
+          </tr>
+          <tr><td>Essai 2</td>
+            <td><input class="mobil-input" type="number" id="ussp-s2-sain" placeholder="cm" oninput="calcUSSP()"></td>
+            <td><input class="mobil-input" type="number" id="ussp-s2-att" placeholder="cm" oninput="calcUSSP()"></td>
+          </tr>
+          <tr><td>Essai 3</td>
+            <td><input class="mobil-input" type="number" id="ussp-s3-sain" placeholder="cm" oninput="calcUSSP()"></td>
+            <td><input class="mobil-input" type="number" id="ussp-s3-att" placeholder="cm" oninput="calcUSSP()"></td>
+          </tr>
+          <tr style="border-top:2px solid var(--border2);">
+            <td><strong>Meilleure valeur</strong></td>
+            <td style="text-align:center;font-weight:700;" id="ussp-best-sain">—</td>
+            <td style="text-align:center;font-weight:700;" id="ussp-best-att">—</td>
+          </tr>
+          <tr>
+            <td><strong>LSI</strong></td>
+            <td colspan="2" style="text-align:center;"><span class="deficit-cell" id="ussp-lsi">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field" style="margin-top:12px;"><label>Notes USSP</label>
+        <textarea id="ussp-notes" placeholder="Ballon utilise, douleur, technique de lancer..." style="min-height:50px;resize:vertical;"></textarea>
+      </div>
+    </div>
+  </details>
+
+  <!-- Synthese RTP -->
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="acc-info"><div class="acc-title">Synthèse RTP</div><div class="acc-sub">Décision de retour au sport — LSI ≥ 90%</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Synthese RTP
+      <span class="tag tag-epaule">Seuil LSI ≥ 90%</span>
+    </div>
+    <div id="rtp-synthese" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:14px;"></div>
+    <div class="field"><label>Decision RTP</label>
+      <select id="rtp-decision">
+        <option value="">— Selectionner —</option>
+        <option value="cleared">Cleared — Autorise au retour au sport</option>
+        <option value="cleared-prog">Cleared avec progression graduee</option>
+        <option value="not-cleared">Not cleared — Readaptation a poursuivre</option>
+        <option value="en-cours">En cours d evaluation</option>
+      </select>
+    </div>
+    <div class="field"><label>Commentaires RTP</label>
+      <textarea id="rtp-notes" placeholder="Criteres atteints, manquants, plan de progression..." style="min-height:70px;resize:vertical;"></textarea>
+    </div>
+  </div>
+</div></details>
+
+  <div style="display:flex;justify-content:space-between;margin-top:8px;">
+    <button class="btn btn-secondary" onclick="goTo(4)">← Retour</button>
+    <button class="btn btn-primary" onclick="goTo(6)">Conclusion →</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SEC 6 — CONCLUSION ═══════════════ -->
+<div class="section" id="sec6">
+
+<details class="acc" open><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="acc-info"><div class="acc-title">Conclusion & plan de traitement</div><div class="acc-sub">Diagnostic, protocole, durée, prévention</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Conclusion & plan de traitement</div>
+    <div class="field" style="margin-bottom:12px"><label>Diagnostic kinésithérapique</label>
+      <textarea id="diagnostic" placeholder="Ex : Tendinopathie du supra-épineux avec déficit de RE et conflit sous-acromial, épaule droite, footballeur amateur…" style="min-height:70px;resize:vertical;"></textarea></div>
+    <div class="row">
+      <div class="field"><label>Durée estimée de RTS</label><input type="text" id="duree-rts" placeholder="ex : 6–10 semaines"></div>
+      <div class="field"><label>Nombre de séances prévu</label><input type="number" id="nb-seances" placeholder="12"></div>
+      <div class="field"><label>Fréquence</label><input type="text" id="freq-seances" placeholder="2–3x / semaine"></div>
+    </div>
+    <div class="field" style="margin-bottom:12px"><label>Plan phase aiguë (J0–J15)</label>
+      <textarea id="plan-aigu" placeholder="Antalgiques, cryothérapie, décharge relative, TENS, mobilisation passive douce, pendulaire Codman, positionnement…" style="resize:vertical;"></textarea></div>
+    <div class="field" style="margin-bottom:12px"><label>Plan renforcement & stabilisation</label>
+      <textarea id="plan-renfo" placeholder="Renforcement coiffe des rotateurs (RE/RI), centreurs de tête humérale, trapèzes, dentelé antérieur, travail proprioceptif…" style="resize:vertical;"></textarea></div>
+    <div class="field" style="margin-bottom:12px"><label>Plan reprise sportive</label>
+      <textarea id="plan-sport" placeholder="Reprise lancers progressifs J21, gestes techniques J35, entraînement partiel J45, compétition J60…" style="resize:vertical;"></textarea></div>
+    <div class="field"><label>Prévention des récidives</label>
+      <textarea id="plan-prevention" placeholder="Programme de gainage scapulaire, échauffement spécifique, correction gestuelle, charge progressive, suivi isocinétique…" style="resize:vertical;"></textarea></div>
+  </div>
+</div></details>
+
+<details class="acc"><summary><div class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><div class="acc-info"><div class="acc-title">Suivi & réévaluation</div><div class="acc-sub">Progression, prochaine imagerie, contrôle médical</div></div><svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></summary><div class="acc-body">
+  <div class="card">
+    <div class="card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Suivi & réévaluation</div>
+    <div class="row">
+      <div class="field"><label>Date de réévaluation</label><input type="date" id="date-reeval"></div>
+      <div class="field"><label>Séances réalisées</label><input type="number" id="seances-faites" placeholder="6"></div>
+      <div class="field"><label>Prochain contrôle médical</label><input type="date" id="date-medical"></div>
+    </div>
+    <div class="field"><label>Notes de progression</label>
+      <textarea id="notes-prog" placeholder="Amplitudes récupérées à 90%, RE déficitaire de 15%, DASH amélioré de 18 points, reprise lancer léger sans douleur…" style="resize:vertical;"></textarea></div>
+  </div>
+</div></details>
+
+  <div class="actions-row" style="margin-top:12px;">
+    <button class="btn btn-print" onclick="lancerImpression()">⎙ Imprimer le bilan complet</button>
+    <button class="btn btn-primary" onclick="finaliserEtRetour()">✓ Terminer et retour à l'accueil</button>
+  </div>
+</div>
+
+<!-- OVERLAY PROTOCOLES -->
+<div class="overlay" id="help-overlay">
+  <div class="overlay-box">
+    <div class="overlay-title" id="help-title"></div>
+    <div id="help-content" style="font-size:13px;color:var(--text2);line-height:1.7;"></div>
+    <button class="overlay-close" onclick="closeHelp()">Fermer</button>
+  </div>
+</div>
+
+<script>
+// ── KCS AUTH GATE + AUTO-SAVE ──
+let KCS_bilanId = null;
+let KCS_autoSaver = null;
+
+(async function KCS_init(){
+  await window.KCS_checkAuth();
+  window.KCS_autoImport('importerCode_epaule');
+
+  const params = new URLSearchParams(window.location.search);
+  KCS_bilanId = params.get('bid');
+
+  if (KCS_bilanId) {
+    const bilan = await window.KCS_loadBilan(KCS_bilanId);
+    if (bilan && bilan.data) {
+      setTimeout(function(){
+        KCS_autoSaver.applyFormData(bilan.data);
+      }, 150);
+    }
+    if (bilan && bilan.is_draft === false) {
+      window.KCS_bilanIsFinished = true;
+      var banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,159,67,0.15);border-bottom:2px solid #ff9f43;padding:8px 22px;font-size:12px;font-weight:600;color:#ff9f43;text-align:center;';
+      banner.textContent = '\u270f\ufe0f Modification d\'un bilan termin\u00e9 — les changements sont sauvegard\u00e9s automatiquement';
+      document.body.insertBefore(banner, document.body.firstChild);
+      setTimeout(function(){
+        var btn = document.querySelector('[onclick="finaliserEtRetour()"]');
+        if (btn) btn.textContent = '\u2713 Enregistrer les modifications';
+      }, 200);
+    }
+  } else {
+    KCS_bilanId = await window.KCS_createBilan('epaule', '', '', '');
+    if (KCS_bilanId) {
+      const newUrl = window.location.pathname + '?bid=' + KCS_bilanId;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }
+
+  KCS_autoSaver = window.KCS_autoSave(function(){ return KCS_bilanId; }, {
+    interval: 8000,
+    statusElId: 'kcs-save-status'
+  });
+  KCS_autoSaver.start();
+})();
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+var now = new Date();
+var mois = ['jan','fev','mar','avr','mai','jun','jul','aou','sep','oct','nov','dec'];
+document.getElementById('header-date').innerHTML = now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})+'<br><span style="color:var(--text3)">Kinesport Croix-Sainte</span>';
+
+function updateHeader() {
+  var n = document.getElementById('nom').value;
+  var p = document.getElementById('prenom').value;
+  var c = document.getElementById('cote').value;
+  var txt = '';
+  if (n||p) txt = (p+' '+n).trim();
+  if (c) txt += (txt?' — ':'')+c;
+  document.getElementById('header-patient-info').textContent = txt || 'Kinesport Croix-Sainte';
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+var SL = ['Anamnèse & motif de consultation','Douleur & Clinique','Quick Scan épaule','Mobilité & Force','Scores & Isocinétisme','Retour au sport & Scores','Conclusion & plan de traitement'];
+function goTo(n) {
+  document.querySelectorAll('.section').forEach(function(s,i){ s.classList.toggle('active',i===n); });
+  document.querySelectorAll('.nav-tab').forEach(function(t,i){ t.classList.toggle('active',i===n); });
+  document.getElementById('prog').style.width = (n/6*100)+'%';
+  var lbl = document.getElementById('section-label');
+  if(lbl) lbl.textContent = SL[n] || '';
+  window.scrollTo({top:0,behavior:'smooth'});
+  if (n===5) buildSynthese();
+}
+
+// ── EVA ───────────────────────────────────────────────────────────────────────
+var ntState = {};
+function setEva(id) {
+  var v = parseInt(document.getElementById(id).value);
+  var el = document.getElementById(id+'-v');
+  el.textContent = v;
+  el.style.color = v<=3?'var(--success)':v<=6?'var(--warning)':'var(--danger)';
+}
+function toggleNT(id) {
+  ntState[id] = !ntState[id];
+  var btn = document.getElementById(id+'-nt');
+  var slider = document.getElementById(id);
+  btn.classList.toggle('active', ntState[id]);
+  slider.disabled = ntState[id];
+  slider.style.opacity = ntState[id]?'0.3':'1';
+  if (ntState[id]) { document.getElementById(id+'-v').textContent='NT'; document.getElementById(id+'-v').style.color='var(--text3)'; }
+  else setEva(id);
+}
+
+// ── TESTS ─────────────────────────────────────────────────────────────────────
+function selTest(group, result) {
+  var el = document.getElementById(group);
+  el.querySelectorAll('.rbtn').forEach(function(b){ b.className='rbtn'; });
+  var map = {neg:'sel-neg',doul:'sel-doul',pos:'sel-pos',nt:'sel-nt'};
+  event.target.classList.add(map[result]||'');
+}
+
+// ── MOBILITE ──────────────────────────────────────────────────────────────────
+function calcDeficit(base) {
+  var sain = parseFloat(document.getElementById(base+'-sain').value);
+  var att  = parseFloat(document.getElementById(base+'-att').value);
+  var el   = document.getElementById(base+'-def');
+  if (isNaN(sain)||isNaN(att)||sain===0) { el.textContent='—'; el.style.color='var(--text3)'; return; }
+  var def = Math.round((1-att/sain)*100);
+  el.textContent = def+'%';
+  el.style.color = def<=10?'var(--success)':def<=25?'var(--warning)':'var(--danger)';
+}
+
+// ── DYNAMOMETRE ───────────────────────────────────────────────────────────────
+function calcDynDeficit(base) {
+  var sain = parseFloat(document.getElementById(base+'-sain').value);
+  var att  = parseFloat(document.getElementById(base+'-att').value);
+  var el   = document.getElementById(base+'-def');
+  if (isNaN(sain)||isNaN(att)||sain===0) { el.textContent='—'; el.style.color='var(--text3)'; return; }
+  var def = Math.round((1-att/sain)*100);
+  el.textContent = def+'%';
+  el.style.color = def<=10?'var(--success)':def<=20?'var(--warning)':'var(--danger)';
+  // Ratio RE/RI
+  var reSain = parseFloat(document.getElementById('dyn-re-sain').value);
+  var riSain = parseFloat(document.getElementById('dyn-ri-sain').value);
+  var reAtt  = parseFloat(document.getElementById('dyn-re-att').value);
+  var riAtt  = parseFloat(document.getElementById('dyn-ri-att').value);
+  var ratioEl = document.getElementById('dyn-ratio');
+  if (!isNaN(reSain)&&!isNaN(riSain)&&riSain>0) {
+    var rs = Math.round(reSain/riSain*100);
+    var ra = (!isNaN(reAtt)&&!isNaN(riAtt)&&riAtt>0) ? Math.round(reAtt/riAtt*100) : null;
+    ratioEl.innerHTML = 'Sain: '+rs+'%'+(ra!==null?'<br>Att: '+ra+'%':'');
+    ratioEl.style.color = ra!==null?(ra>=66?'var(--success)':ra>=55?'var(--warning)':'var(--danger)'):'var(--text3)';
+  }
+}
+
+// ── SCORES ────────────────────────────────────────────────────────────────────
+// QUICKDASH
+var dashQuestions = [
+  'Ouvrir un pot ou un bocal (serrage)',
+  'Taches menageres lourdes (frotter les murs, les sols)',
+  'Porter un sac a provisions ou une mallette',
+  'Vous laver le dos',
+  'Utiliser un couteau pour couper les aliments',
+  'Activites de loisirs necessitant des efforts (frapper une balle, tennis...)',
+  'Votre bras, epaule ou main ont perturbe vos activites sociales normales',
+  'Vous avez ete limite dans votre travail ou vos activites quotidiennes',
+  'Douleur dans le bras, epaule ou main',
+  'Sensation de picotements (comme des aiguilles) dans le bras, epaule ou main',
+  'Difficultes a dormir en raison de la douleur'
+];
+var dashOpts = ['Aucune difficulte','Legere difficulte','Difficulte moderee','Grande difficulte','Impossible'];
+var dashState = {};
+
+function buildDash() {
+  var html = dashQuestions.map(function(q,i){
+    return '<div style="padding:12px 0;border-bottom:1px solid var(--border);">'
+      +'<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;"><span style="color:var(--epaule);font-weight:700;margin-right:6px;">'+(i+1)+'.</span>'+q+'</div>'
+      +'<div class="dash-opts">'
+      +dashOpts.map(function(o,j){return '<button class="dash-opt" data-q="'+i+'" data-v="'+(j+1)+'" onclick="selDash(this)">'+o+'</button>';}).join('')
+      +'</div></div>';
+  }).join('');
+  document.getElementById('dash-questions').innerHTML = html;
+}
+
+function selDash(el) {
+  var q = el.dataset.q;
+  document.querySelectorAll('.dash-opt[data-q="'+q+'"]').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  dashState[q] = parseInt(el.dataset.v);
+  calcDash();
+}
+
+function calcDash() {
+  var vals = Object.values(dashState);
+  if (vals.length < 11) { document.getElementById('dash-score').textContent='—'; return; }
+  var sum = vals.reduce(function(a,b){return a+b;},0);
+  var score = Math.round(((sum/11)-1)/4*100);
+  var el = document.getElementById('dash-score');
+  el.textContent = score+'/100';
+  el.style.color = score<=25?'var(--success)':score<=50?'var(--warning)':'var(--danger)';
+  var interp = score<=25?'Handicap leger':score<=50?'Handicap modere':score<=75?'Handicap severe':'Handicap tres severe';
+  document.getElementById('dash-interp').textContent = interp;
+  document.getElementById('dash-interp').style.color = score<=25?'var(--success)':score<=50?'var(--warning)':'var(--danger)';
+}
+
+// OXFORD SHOULDER SCORE
+var ossQuestions = [
+  'Comment decririez-vous la pire douleur que vous avez eue a l\'epaule ?',
+  'Avez-vous eu des difficultes a vous laver ?',
+  'Avez-vous eu des difficultes a monter ou descendre d\'une voiture ?',
+  'Avez-vous pu faire vos courses vous-meme ?',
+  "Avez-vous pu vous nourrir vous-meme (couper la viande, etc.) ?",
+  "Avez-vous pu vous peigner/coiffer seul(e) ?",
+  'Avez-vous pu faire le menage ou le jardinage ?',
+  'Avez-vous pu faire le lit ?',
+  'Avez-vous pu porter un plateau ou un sac (>2 kg) ?',
+  'Avez-vous pu utiliser votre epaule pour vous lever d\'un fauteuil ?',
+  'La douleur a-t-elle perturbe votre travail habituel ?',
+  'La douleur a-t-elle souvent perturbe votre sommeil ?'
+];
+var ossOpts5 = ['Pas du tout','Legere','Moderee','Severe','Insupportable'];
+var ossOpts5_inv = ['Non, facilement','Avec legere difficulte','Avec grande difficulte','Difficulte extreme','Impossible'];
+var ossState = {};
+
+function buildOSS() {
+  var html = ossQuestions.map(function(q,i){
+    var opts = (i===0||i===10||i===11) ? ossOpts5 : ossOpts5_inv;
+    return '<div style="padding:12px 0;border-bottom:1px solid var(--border);">'
+      +'<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;"><span style="color:var(--epaule);font-weight:700;margin-right:6px;">'+(i+1)+'.</span>'+q+'</div>'
+      +'<div class="dash-opts">'
+      +opts.map(function(o,j){return '<button class="dash-opt" data-q="oss'+i+'" data-v="'+j+'" onclick="selOSS(this)">'+o+'</button>';}).join('')
+      +'</div></div>';
+  }).join('');
+  document.getElementById('oss-questions').innerHTML = html;
+}
+
+function selOSS(el) {
+  var q = el.dataset.q;
+  document.querySelectorAll('.dash-opt[data-q="'+q+'"]').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  ossState[q] = parseInt(el.dataset.v);
+  calcOSS();
+}
+
+function calcOSS() {
+  var keys = Object.keys(ossState).filter(function(k){return k.startsWith('oss');});
+  if (keys.length < 12) { document.getElementById('oss-score').textContent='—'; return; }
+  // OSS: chaque item 0-4, total /48, mais score inversé (4=pas de pb, 0=max pb)
+  var sum = keys.reduce(function(a,k){return a+ossState[k];},0);
+  var score = 48 - sum; // inverser
+  var el = document.getElementById('oss-score');
+  el.textContent = score+'/48';
+  el.style.color = score>=40?'var(--success)':score>=30?'var(--warning)':'var(--danger)';
+  var interp = score>=40?'Bonne fonction':score>=30?'Fonction moderee':score>=20?'Fonction mediocre':'Mauvaise fonction';
+  document.getElementById('oss-interp').textContent = interp;
+  document.getElementById('oss-interp').style.color = score>=40?'var(--success)':score>=30?'var(--warning)':'var(--danger)';
+}
+
+// WOSI
+var wosiQuestions = [
+  {cat:'Symptomes physiques',q:'Douleur dans l\'epaule lors d\'activites au-dessus de la tete'},
+  {cat:'Symptomes physiques',q:'Douleur dans l\'epaule lors d\'activites en position basse'},
+  {cat:'Symptomes physiques',q:'Douleur dans l\'epaule au repos'},
+  {cat:'Symptomes physiques',q:'Faiblesse ou manque de force dans l\'epaule'},
+  {cat:'Symptomes physiques',q:'Fatigue ou manque d\'endurance dans l\'epaule'},
+  {cat:'Symptomes physiques',q:'Crepitements, claquements ou bruits dans l\'epaule'},
+  {cat:'Symptomes physiques',q:'Raideur dans l\'epaule'},
+  {cat:'Symptomes physiques',q:'Inconfort dans l\'epaule lors de mouvements du cou'},
+  {cat:'Symptomes physiques',q:'Gonflement ou inflammation de l\'epaule'},
+  {cat:'Symptomes physiques',q:'Sensation de deboitement (luxation) de l\'epaule'},
+  {cat:'Sport/loisirs/travail',q:"Difficulte a effectuer votre sport ou activites habituelles"},
+  {cat:'Sport/loisirs/travail',q:'Sensation de limites dans votre sport a cause de l\'epaule'},
+  {cat:'Sport/loisirs/travail',q:"Avoir besoin de modifier votre sport ou activite"},
+  {cat:'Sport/loisirs/travail',q:'Difficile de lever des objets lourds'},
+  {cat:'Sport/loisirs/travail',q:"Difficulte a effectuer des taches au-dessus de la tete au travail"},
+  {cat:'Mode de vie',q:'Difficulte a dormir a cause de l\'epaule'},
+  {cat:'Mode de vie',q:'Difficulte a effectuer les taches menageres'},
+  {cat:'Mode de vie',q:'Difficulte a vous habiller et deshabiller'},
+  {cat:'Bien-etre emotionnel',q:"Etre conscient(e) de votre epaule"},
+  {cat:'Bien-etre emotionnel',q:"Etre anxieux(se) ou inquiet(e) a propos de votre epaule"},
+  {cat:'Bien-etre emotionnel',q:'Se sentir frustre(e) a cause de l\'epaule'}
+];
+var wosiState = {};
+
+function buildWOSI() {
+  var html = wosiQuestions.map(function(item,i){
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">'
+      +'<div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--epaule);margin-bottom:4px;">'+item.cat+'</div>'
+      +'<div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;"><span style="color:var(--text3);margin-right:6px;">'+(i+1)+'.</span>'+item.q+'</div>'
+      +'<div style="display:flex;align-items:center;gap:10px;">'
+      +'<span style="font-size:10px;color:var(--text3);white-space:nowrap;">Pas de symptome</span>'
+      +'<input type="range" min="0" max="100" step="1" value="0" id="wosi-'+i+'" oninput="calcWOSI()" style="flex:1;height:5px;accent-color:var(--epaule);">'
+      +'<span style="font-size:10px;color:var(--text3);white-space:nowrap;">Symptome extreme</span>'
+      +'<span style="font-size:15px;font-weight:700;font-family:monospace;min-width:30px;text-align:center;color:var(--epaule)" id="wosi-'+i+'-v">0</span>'
+      +'</div></div>';
+  }).join('');
+  document.getElementById('wosi-questions').innerHTML = html;
+}
+
+function calcWOSI() {
+  var total = 0;
+  for (var i=0; i<21; i++) {
+    var el = document.getElementById('wosi-'+i);
+    var vel = document.getElementById('wosi-'+i+'-v');
+    if (el) { var v=parseInt(el.value); total+=v; vel.textContent=v; vel.style.color=v<=20?'var(--success)':v<=50?'var(--warning)':'var(--danger)'; }
+  }
+  var pct = Math.round((1-total/2100)*100);
+  document.getElementById('wosi-score').textContent = total+'/2100';
+  document.getElementById('wosi-score').style.color = total<=500?'var(--success)':total<=1200?'var(--warning)':'var(--danger)';
+  document.getElementById('wosi-pct').textContent = pct+'%';
+  document.getElementById('wosi-pct').style.color = pct>=75?'var(--success)':pct>=50?'var(--warning)':'var(--danger)';
+  var interp = total<=500?'Tres bonne stabilite':total<=1200?'Stabilite moderee':'Instabilite significative';
+  document.getElementById('wosi-interp').textContent = interp;
+  document.getElementById('wosi-pct-interp').textContent = pct>=75?'Bon resultat':pct>=50?'Resultat modere':'Resultat insuffisant';
+}
+
+// ── AIDE PROTOCOLES ───────────────────────────────────────────────────────────
+var helpData = {
+  neer: {title:'Test de Neer',content:'<strong>Position :</strong> Patient assis ou debout. Le kine stabilise l\'epaule d\'une main et leve passivement le bras en avant (flexion), en rotation interne, jusqu\'a la butee ou l\'apparition de la douleur.<br><br><strong>Positif :</strong> Douleur anterieure ou superieure de l\'epaule entre 70 et 120 deg.<br><br><strong>Signification :</strong> Conflit sous-acromial (supra-epineux ou biceps).<br><br><strong>Se/Sp :</strong> 79% / 53%'},
+  hawkins: {title:'Test de Hawkins-Kennedy',content:'<strong>Position :</strong> Flexion du coude a 90 deg, epaule a 90 deg de flexion. Le kine effectue une rotation interne forcee et progressive.<br><br><strong>Positif :</strong> Douleur sous-acromiale lors de la rotation interne.<br><br><strong>Signification :</strong> Conflit sous-acromial (tendon supra-epineux sous l\'acromion).<br><br><strong>Se/Sp :</strong> 79% / 59%'},
+  jobe: {title:'Test de Jobe — Empty Can',content:'<strong>Position :</strong> Abduction a 90 deg dans le plan scapulaire (environ 30 deg en avant du frontal), rotation interne (pouce vers le bas, comme si on vidait une boite de conserve). Resistance appliquee par le kine vers le bas.<br><br><strong>Positif :</strong> Douleur et/ou faiblesse.<br><br><strong>Signification :</strong> Pathologie du supra-epineux (rupture ou tendinopathie).<br><br><strong>Se/Sp :</strong> 69% / 66%'},
+  fullcan: {title:'Test Full Can',content:'<strong>Position :</strong> Identique a Jobe mais pouce vers le haut (rotation externe). Moins douloureux, meilleure activation du supra-epineux.<br><br><strong>Positif :</strong> Douleur et/ou faiblesse significative.<br><br><strong>Signification :</strong> Pathologie du supra-epineux.<br><br><strong>Se/Sp :</strong> 66% / 64%'},
+  patte: {title:'Test de Patte — Lag Sign',content:'<strong>Position :</strong> Epaule a 90 deg d\'abduction, coude a 90 deg de flexion. Le kine amene passivement en rotation externe maximum et demande au patient de maintenir la position.<br><br><strong>Positif :</strong> Le patient ne peut pas maintenir — le bras retombe (lag sign).<br><br><strong>Signification :</strong> Rupture de l\'infra-epineux et/ou du petit rond.<br><br><strong>Se/Sp :</strong> 89% / 98%'},
+  gerber: {title:'Test de Gerber — Lift-Off',content:'<strong>Position :</strong> Main du patient placee dans le dos au niveau lombaire, dos de la main vers le kine. On demande de decoller la main du dos contre resistance.<br><br><strong>Positif :</strong> Impossibilite de decoller la main ou faiblesse marquee.<br><br><strong>Signification :</strong> Rupture du subscapulaire.<br><br><strong>Se/Sp :</strong> 92% / 87%'},
+  bearhug: {title:'Test Bear Hug',content:'<strong>Position :</strong> Main du patient posee sur l\'epaule opposee, coude leve a 90 deg. Le kine tente de soulever la main de l\'epaule en tirant vers le haut.<br><br><strong>Positif :</strong> Difficulte a maintenir la main sur l\'epaule ou rotation du tronc compensatoire.<br><br><strong>Signification :</strong> Rupture du subscapulaire (partie superieure).<br><br><strong>Se/Sp :</strong> 60% / 92%'},
+  apprehension: {title:'Test d Apprehension',content:'<strong>Position :</strong> Patient en decubitus ou assis. Abduction a 90 deg, rotation externe progressive. Le kine exerce une pression anterieure sur la tete humerale.<br><br><strong>Positif :</strong> Sensation d\'instabilite, apprehension ou peur de luxation (pas obligatoirement douleur).<br><br><strong>Signification :</strong> Instabilite anterieure glenohumerale.<br><br><strong>Se/Sp :</strong> 72% / 96%'},
+  relocation: {title:'Test de Relocation (Jobe)',content:'<strong>Position :</strong> Apres un test d\'apprehension positif, le kine exerce une pression posterieure sur la tete humerale pour la recentrer.<br><br><strong>Positif :</strong> Disparition de l\'apprehension ou de la douleur avec la pression posterieure.<br><br><strong>Signification :</strong> Confirme l\'instabilite anterieure. Tres specifique.<br><br><strong>Se/Sp :</strong> 81% / 90%'},
+  sulcus: {title:'Sulcus Sign',content:'<strong>Position :</strong> Patient assis, bras le long du corps, muscles relaches. Le kine tire vers le bas sur le bras.<br><br><strong>Positif :</strong> Apparition d\'un sillon entre l\'acromion et la tete humerale (> 1 cm = grade 2, > 2 cm = grade 3).<br><br><strong>Signification :</strong> Instabilite inferieure ou multidirectionnelle.<br><br><strong>Se/Sp :</strong> 62% / 88%'},
+  'tiroir-ant': {title:'Test du Tiroir Anterieur',content:'<strong>Position :</strong> Patient assis ou en decubitus. Le kine stabilise la scapula d\'une main et mobilise la tete humerale vers l\'avant avec l\'autre main.<br><br><strong>Positif :</strong> Translation anterieure excessive et/ou douleur.<br><br><strong>Signification :</strong> Laxite capsulaire anterieure ou lesion de Bankart.<br><br><strong>Se/Sp :</strong> 53% / 85%'},
+  speed: {title:'Test de Speed',content:'<strong>Position :</strong> Coude en extension, avant-bras en supination, epaule en flexion a 60-90 deg. Resistance appliquee vers le bas sur le poignet.<br><br><strong>Positif :</strong> Douleur dans la gouttiere bicipitale.<br><br><strong>Signification :</strong> Tendinopathie du long chef du biceps (LCB).<br><br><strong>Se/Sp :</strong> 69% / 66%'},
+  yergason: {title:'Test de Yergason',content:'<strong>Position :</strong> Coude flachi a 90 deg, avant-bras en pronation. Le patient supine contre la resistance du kine.<br><br><strong>Positif :</strong> Douleur dans la gouttiere bicipitale.<br><br><strong>Signification :</strong> Tendinopathie ou instabilite du LCB.<br><br><strong>Se/Sp :</strong> 43% / 79%'},
+  obrien: {title:'Test d O Brien — Active Compression',content:'<strong>Position :</strong> Epaule a 90 deg de flexion + 10-15 deg d\'adduction horizontale. 1) Rotation interne (pouce vers le bas), resistance vers le bas. 2) Rotation externe (pouce vers le haut), resistance vers le bas.<br><br><strong>Positif :</strong> Douleur ou bruit en RI disparaissant en RE.<br><br><strong>Signification :</strong> Lesion SLAP (biceps-labrum superieur).<br><br><strong>Se/Sp :</strong> 78% / 91%'}
+};
+
+function showHelp(key) {
+  var h = helpData[key];
+  if (!h) return;
+  document.getElementById('help-title').textContent = h.title;
+  document.getElementById('help-content').innerHTML = h.content;
+  document.getElementById('help-overlay').classList.add('open');
+}
+function closeHelp() { document.getElementById('help-overlay').classList.remove('open'); }
+document.getElementById('help-overlay').addEventListener('click', function(e){ if(e.target===this) closeHelp(); });
+
+// ── SYNTHESE ──────────────────────────────────────────────────────────────────
+function buildSynthese() {
+  var items = [
+    {label:'Patient', val:((document.getElementById('prenom').value+' '+document.getElementById('nom').value).trim())||'—'},
+    {label:'Cote atteint', val:document.getElementById('cote').value||'—'},
+    {label:'Pathologie', val:document.getElementById('pathologie').value||'—'},
+    {label:'Anciennete', val:document.getElementById('anciennete').value||'—'},
+    {label:'EVA repos', val:ntState['eva-repos']?'NT':document.getElementById('eva-repos').value+'/10'},
+    {label:'EVA effort', val:ntState['eva-effort']?'NT':document.getElementById('eva-effort').value+'/10'},
+    {label:'QuickDASH', val:document.getElementById('dash-score').textContent||'—'},
+    {label:'Oxford Shoulder', val:document.getElementById('oss-score').textContent||'—'},
+    {label:'WOSI', val:document.getElementById('wosi-score').textContent||'—'},
+    {label:'WOSI %', val:document.getElementById('wosi-pct').textContent||'—'}
+  ];
+  document.getElementById('synthese-grid').innerHTML = items.map(function(item){
+    return '<div class="concl-item"><div class="concl-label">'+item.label+'</div><div class="concl-val">'+item.val+'</div></div>';
+  }).join('');
+}
+
+// ── QR CODE ───────────────────────────────────────────────────────────────────
+function onUrlChange_epaule() {
+  var v=document.getElementById('url-patient-epaule').value.trim();
+  var b=document.getElementById('btn-qr-epaule');
+  var ok=v.startsWith('https://')||v.startsWith('http://');
+  b.style.opacity=ok?'1':'0.4';b.style.pointerEvents=ok?'auto':'none';
+}
+
+function genererQR_epaule() {
+  var base=document.getElementById('url-patient-epaule').value.trim();
+  var url=base+(base.indexOf('?')>=0?'&':'?')+'bilan=epaule';
+  document.getElementById('qr-display-epaule').style.display='block';
+  var div=document.getElementById('qr-canvas-epaule');div.innerHTML='';
+  try{new QRCode(div,{text:url,width:200,height:200,colorDark:'#000000',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+  catch(e){div.innerHTML='<div style="color:var(--danger);font-size:12px;padding:10px;">Erreur QR</div>';}
+}
+
+function checkCode_epaule() {
+  var v=document.getElementById('kcs-code-epaule').value.trim();
+  var b=document.getElementById('import-btn-epaule');
+  var ok=v.startsWith('KCS1:');
+  b.style.opacity=ok?'1':'0.4';b.style.pointerEvents=ok?'auto':'none';
+}
+
+function importerCode_epaule() {
+  var raw=document.getElementById('kcs-code-epaule').value.trim();
+  var st=document.getElementById('import-status-epaule');
+  if(!raw.startsWith('KCS1:')){st.textContent='Code invalide.';st.style.color='var(--danger)';return;}
+  try{
+    var data=JSON.parse(decodeURIComponent(escape(atob(raw.slice(5).replace(/-/g,'+').replace(/_/g,'/')))));
+    var set=function(id,v){var el=document.getElementById(id);if(el&&v!==undefined&&v!=='')el.value=v;};
+    set('nom',data.nom);set('prenom',data.prenom);set('ddn',data.ddn);
+    set('sport',data.sport);set('metier',data.metier);set('cote',data.cote);set('anciennete',data.anciennete);
+    if(data.eva){
+      Object.keys(data.eva).forEach(function(k){var s=document.getElementById(k);if(s){s.value=data.eva[k];setEva(k);}});
+    }
+    updateHeader();
+    var n=(data.prenom||'')+' '+(data.nom||'');
+    st.innerHTML='Import reussi — <strong>'+n.trim()+'</strong>';st.style.color='var(--success)';
+    document.getElementById('kcs-code-epaule').value='';checkCode_epaule();
+  }catch(e){st.textContent='Erreur decodage';st.style.color='var(--danger)';}
+}
+
+
+// ── RTP CALCULS ───────────────────────────────────────────────────────────────
+function calcLSI(sain, att) {
+  if (!sain || !att || sain === 0) return null;
+  return Math.round((att / sain) * 100);
+}
+function showLSI(elId, lsi) {
+  var el = document.getElementById(elId);
+  if (!el || lsi === null) { if(el) el.textContent='—'; return; }
+  el.textContent = lsi + '%';
+  el.style.color = lsi >= 90 ? 'var(--success)' : lsi >= 75 ? 'var(--warning)' : 'var(--danger)';
+}
+function bestOf(ids) {
+  var vals = ids.map(function(id){ return parseFloat(document.getElementById(id).value)||0; }).filter(function(v){return v>0;});
+  return vals.length ? Math.max.apply(null, vals) : null;
+}
+
+function calcCKC() {
+  var sain = bestOf(['ckc-s1-sain','ckc-s2-sain','ckc-s3-sain']);
+  var att  = bestOf(['ckc-s1-att','ckc-s2-att','ckc-s3-att']);
+  document.getElementById('ckc-best-sain').textContent = sain !== null ? sain : '—';
+  document.getElementById('ckc-best-att').textContent  = att  !== null ? att  : '—';
+  showLSI('ckc-lsi', sain && att ? calcLSI(sain, att) : null);
+  updateRTPSynthese();
+}
+
+function calcUQYBT() {
+  var lmsSain = parseFloat(document.getElementById('uqy-lms-sain').value)||0;
+  var lmsAtt  = parseFloat(document.getElementById('uqy-lms-att').value)||0;
+  var dirs = ['m','il','sl'];
+  var sumSain=0, sumAtt=0, countSain=0, countAtt=0;
+  dirs.forEach(function(d){
+    var s = parseFloat(document.getElementById('uqy-'+d+'-sain').value)||0;
+    var a = parseFloat(document.getElementById('uqy-'+d+'-att').value)||0;
+    var pctS = lmsSain>0 && s>0 ? Math.round(s/lmsSain*100) : null;
+    var pctA = lmsAtt>0  && a>0 ? Math.round(a/lmsAtt*100)  : null;
+    document.getElementById('uqy-'+d+'-pct-sain').textContent = pctS!==null?pctS+'%':'—';
+    document.getElementById('uqy-'+d+'-pct-att').textContent  = pctA!==null?pctA+'%':'—';
+    if(s>0){sumSain+=s;countSain++;}
+    if(a>0){sumAtt+=a;countAtt++;}
+  });
+  var compSain = lmsSain>0 && countSain===3 ? Math.round(sumSain/(3*lmsSain)*100) : null;
+  var compAtt  = lmsAtt>0  && countAtt===3  ? Math.round(sumAtt/(3*lmsAtt)*100)   : null;
+  document.getElementById('uqy-comp-sain').textContent = compSain!==null?compSain+'%':'—';
+  document.getElementById('uqy-comp-att').textContent  = compAtt!==null?compAtt+'%':'—';
+  showLSI('uqy-lsi', compSain&&compAtt ? calcLSI(compSain,compAtt) : null);
+  updateRTPSynthese();
+}
+
+function calcPSET(n) {
+  var sain = parseFloat(document.getElementById('pset'+n+'-sain').value)||0;
+  var att  = parseFloat(document.getElementById('pset'+n+'-att').value)||0;
+  showLSI('pset'+n+'-lsi', sain>0&&att>0 ? calcLSI(sain,att) : null);
+  updateRTPSynthese();
+}
+
+function calcLinHops() {
+  var sain = bestOf(['lh-s1-sain','lh-s2-sain','lh-s3-sain']);
+  var att  = bestOf(['lh-s1-att','lh-s2-att','lh-s3-att']);
+  document.getElementById('lh-best-sain').textContent = sain!==null?sain:'—';
+  document.getElementById('lh-best-att').textContent  = att!==null?att:'—';
+  showLSI('lh-lsi', sain&&att ? calcLSI(sain,att) : null);
+  updateRTPSynthese();
+}
+
+function calcUSSP() {
+  var sain = bestOf(['ussp-s1-sain','ussp-s2-sain','ussp-s3-sain']);
+  var att  = bestOf(['ussp-s1-att','ussp-s2-att','ussp-s3-att']);
+  document.getElementById('ussp-best-sain').textContent = sain!==null?sain+' cm':'—';
+  document.getElementById('ussp-best-att').textContent  = att!==null?att+' cm':'—';
+  showLSI('ussp-lsi', sain&&att ? calcLSI(sain,att) : null);
+  updateRTPSynthese();
+}
+
+function updateRTPSynthese() {
+  var tests = [
+    {label:'CKCUEST', id:'ckc-lsi'},
+    {label:'UQYBT',   id:'uqy-lsi'},
+    {label:'PSET 1',  id:'pset1-lsi'},
+    {label:'PSET 2',  id:'pset2-lsi'},
+    {label:'PSET 3',  id:'pset3-lsi'},
+    {label:'PSET 4',  id:'pset4-lsi'},
+    {label:'PSET 5',  id:'pset5-lsi'},
+    {label:'PSET 6',  id:'pset6-lsi'},
+    {label:'Line Hops',id:'lh-lsi'},
+    {label:'USSP',    id:'ussp-lsi'}
+  ];
+  var html = '';
+  tests.forEach(function(t){
+    var el = document.getElementById(t.id);
+    var val = el ? el.textContent : '—';
+    if(val==='—') return;
+    var lsi = parseInt(val);
+    var cls = lsi>=90?'good':lsi>=75?'mid':'bad';
+    html += '<div class="score-display"><div class="score-val '+cls+'" style="font-size:22px;">'+val+'</div><div class="score-label">'+t.label+'</div></div>';
+  });
+  document.getElementById('rtp-synthese').innerHTML = html ||
+    '<div style="color:var(--text3);font-size:13px;grid-column:1/-1;">Remplissez les tests ci-dessus pour voir la synthese</div>';
+}
+
+// ── IMPRESSION ────────────────────────────────────────────────────────────────
+
+var camStream = null;
+var photosCapturees = [];
+
+function ouvrirCamera(){
+  var modal=document.getElementById('cam-modal');
+  if(modal) modal.style.display='flex';
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})
+    .then(function(stream){
+      camStream=stream;
+      var video=document.getElementById('cam-video');
+      if(video) video.srcObject=stream;
+    })
+    .catch(function(e){
+      if(modal) modal.style.display='none';
+      alert('Camera non accessible : '+e.message);
+    });
+  } else {
+    alert('Camera non supportee sur cet appareil.');
+  }
+}
+
+function prendrePhoto(){
+  var video=document.getElementById('cam-video');
+  var canvas=document.getElementById('cam-canvas');
+  if(!video||!canvas) return;
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  var dataUrl=canvas.toDataURL('image/jpeg',0.8);
+  ajouterPhoto(dataUrl);
+  fermerCamera();
+}
+
+function ajouterPhoto(dataUrl){
+  photosCapturees.push(dataUrl);
+  var g=document.getElementById('photos-container');
+  if(!g) return;
+  var idx=photosCapturees.length-1;
+  var div=document.createElement('div');
+  div.style.cssText='position:relative;display:inline-block;';
+  div.innerHTML='<img src="'+dataUrl+'" style="width:120px;height:90px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid var(--border2);" onclick="voirPhoto('+idx+')">'
+    +'<button onclick="supprimerPhoto('+idx+')" style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:none;background:rgba(255,82,82,0.9);color:#fff;font-size:10px;cursor:pointer;line-height:20px;text-align:center;">x</button>';
+  g.appendChild(div);
+}
+
+function supprimerPhoto(idx){
+  photosCapturees[idx]=null;
+  var g=document.getElementById('photos-container');
+  if(g){g.innerHTML='';photosCapturees.filter(Boolean).forEach(function(p){ajouterPhoto(p);});}
+}
+
+function voirPhoto(idx){
+  if(photosCapturees[idx]){
+    var w=window.open('','_blank');
+    w.document.write('<img src="'+photosCapturees[idx]+'" style="max-width:100%;height:auto;">');
+    w.document.close();
+  }
+}
+
+function fermerCamera(){
+  if(camStream){camStream.getTracks().forEach(function(t){t.stop();});camStream=null;}
+  var modal=document.getElementById('cam-modal');
+  if(modal) modal.style.display='none';
+}
+
+function buildPrint(){
+  var dateStr=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  var v=function(id){var el=document.getElementById(id);return el?el.value.trim():'';};
+  var g=function(id){var el=document.getElementById(id);return el?el.textContent.trim():'';};
+  var html='<div style="font-family:Arial,sans-serif;max-width:800px;margin:0 auto;color:#1a1a2e;font-size:13px;line-height:1.6;">';
+  html+='<div style="text-align:center;padding:20px 0;border-bottom:2px solid #00cec9;margin-bottom:20px;">';
+  html+='<h1 style="font-size:20px;color:#00cec9;margin-bottom:4px;">BILAN EPAULE — Kinesport Croix-Sainte</h1>';
+  html+='<div style="font-size:12px;color:#666;">'+dateStr+'</div></div>';
+  html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">PATIENT</h2>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">';
+  html+='<div><strong>Nom :</strong> '+v('nom')+' '+v('prenom')+'</div>';
+  html+='<div><strong>Naissance :</strong> '+v('ddn')+'</div>';
+  html+='<div><strong>Sport :</strong> '+v('sport')+'</div>';
+  html+='<div><strong>Cote atteint :</strong> '+v('cote')+'</div>';
+  html+='<div><strong>Pathologie :</strong> '+v('pathologie')+'</div>';
+  html+='<div><strong>Anciennete :</strong> '+v('anciennete')+'</div>';
+  html+='</div>';
+  html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">DOULEUR (EVA)</h2>';
+  var evaIds=[{id:'eva-repos',l:'Repos'},{id:'eva-effort',l:'Effort'},{id:'eva-nuit',l:'Nuit'},{id:'eva-palp',l:'Palpation'},{id:'eva-sport',l:'Sport'}];
+  html+='<div style="display:flex;gap:10px;flex-wrap:wrap;">';
+  evaIds.forEach(function(e){
+    var ntBtn=document.getElementById(e.id+'-nt');
+    if(!ntBtn||!ntBtn.classList.contains('active')){
+      var val=document.getElementById(e.id)?document.getElementById(e.id).value:'0';
+      html+='<span style="background:#f0f0f0;padding:3px 8px;border-radius:6px;font-size:12px;"><strong>'+e.l+'</strong> : '+val+'/10</span>';
+    }
+  });
+  html+='</div>';
+  html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">MOBILITE ET FORCE</h2>';
+  var mobs=[{id:'mob-flex',l:'Flexion'},{id:'mob-abd',l:'Abduction'},{id:'mob-re1',l:'RE1'},{id:'mob-re2',l:'RE2'},{id:'mob-ext',l:'Extension'},{id:'mob-add',l:'Add horizontale'}];
+  html+='<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+  html+='<tr style="background:#f5f5f5;"><th style="padding:4px;text-align:left;">Mouvement</th><th>Cote sain</th><th>Cote atteint</th><th>Deficit</th></tr>';
+  mobs.forEach(function(m){
+    var s=v(m.id+'-sain'),a=v(m.id+'-att'),d=g(m.id+'-def');
+    if(s||a) html+='<tr><td style="padding:4px;">'+m.l+'</td><td style="text-align:center;">'+s+'</td><td style="text-align:center;">'+a+'</td><td style="text-align:center;">'+d+'</td></tr>';
+  });
+  html+='</table>';
+  html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">SCORES FONCTIONNELS</h2>';
+  html+='<div style="display:flex;gap:10px;flex-wrap:wrap;">';
+  [{id:'dash-score',l:'QuickDASH'},{id:'oss-score',l:'Oxford'},{id:'wosi-score',l:'WOSI'},{id:'wosi-pct',l:'WOSI%'}].forEach(function(sc){
+    var val=g(sc.id);
+    if(val&&val!=='—') html+='<span style="background:#e8f5e9;padding:4px 10px;border-radius:6px;font-size:12px;"><strong>'+sc.l+'</strong> : '+val+'</span>';
+  });
+  html+='</div>';
+  html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">RETURN TO PLAY</h2>';
+  html+='<div style="display:flex;gap:10px;flex-wrap:wrap;">';
+  [{id:'ckc-lsi',l:'CKCUEST'},{id:'uqy-lsi',l:'UQYBT'},{id:'lh-lsi',l:'Line Hops'},{id:'ussp-lsi',l:'USSP'}].forEach(function(r){
+    var val=g(r.id);
+    if(val&&val!=='—') html+='<span style="background:#e3f2fd;padding:4px 10px;border-radius:6px;font-size:12px;"><strong>'+r.l+'</strong> : '+val+'</span>';
+  });
+  html+='</div>';
+  html+='<h2 style="font-size:14px;color:var(--accent2,#6c63ff);margin:16px 0 8px;">CONCLUSION</h2>';
+  if(v('diagnostic')) html+='<p><strong>Diagnostic :</strong> '+v('diagnostic')+'</p>';
+  if(v('duree-rts')||v('nb-seances')||v('freq-seances')) html+='<p><strong>Prise en charge :</strong> '+[v('duree-rts'),v('nb-seances')?v('nb-seances')+' séances':null,v('freq-seances')].filter(Boolean).join(' — ')+'</p>';
+  if(v('plan-aigu'))  html+='<p><strong>Phase aiguë :</strong> '+v('plan-aigu')+'</p>';
+  if(v('plan-renfo')) html+='<p><strong>Renforcement :</strong> '+v('plan-renfo')+'</p>';
+  if(v('plan-sport')) html+='<p><strong>Reprise sportive :</strong> '+v('plan-sport')+'</p>';
+  if(v('plan-prevention')) html+='<p><strong>Prévention :</strong> '+v('plan-prevention')+'</p>';
+  if(v('date-reeval')||v('seances-faites')||v('notes-prog')) html+='<p><strong>Suivi :</strong> '+(v('date-reeval')?'Rééval. '+v('date-reeval')+' ':'')+( v('seances-faites')?v('seances-faites')+' séances réalisées. ':'')+v('notes-prog')+'</p>';
+  if(v('rtp-decision')) html+='<p><strong>Décision RTP :</strong> '+v('rtp-decision')+'</p>';
+  var pF=photosCapturees.filter(Boolean);
+  if(pF.length>0){
+    html+='<h2 style="font-size:14px;color:#00cec9;margin:16px 0 8px;">IMAGERIE</h2>';
+    html+='<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+    pF.forEach(function(p){html+='<img src="'+p+'" style="max-width:200px;border-radius:6px;border:1px solid #ddd;">';});
+    html+='</div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+async function finaliserEtRetour(){
+  if (typeof KCS_bilanId !== 'undefined' && KCS_bilanId && typeof KCS_autoSaver !== 'undefined' && KCS_autoSaver) {
+    const btn = event.target;
+    btn.textContent = 'Enregistrement…';
+    btn.disabled = true;
+    await window.KCS_saveBilan(KCS_bilanId, KCS_autoSaver.collectFormData(), {isDraft:false});
+  }
+  window.location.href = 'index.html';
+}
+
+function lancerImpression(){
+  if (typeof KCS_bilanId !== 'undefined' && KCS_bilanId && typeof KCS_autoSaver !== 'undefined' && KCS_autoSaver) {
+    KCS_autoSaver.saveNow();
+    window.KCS_saveBilan(KCS_bilanId, KCS_autoSaver.collectFormData(), {isDraft:false});
+  }
+
+  buildPrint();
+  const photosFiltrees=(typeof photosCapturees!=='undefined')?photosCapturees.filter(Boolean):[];
+  const makeFileSection=(files,title)=>new Promise(resolve=>{const filt=(files||[]).filter(Boolean);if(!filt.length){resolve('');return;}const proms=filt.map((file,i)=>new Promise(res=>{const ext=file.name.split('.').pop().toLowerCase();if(ext==='pdf'){res({type:'pdf',url:URL.createObjectURL(file),name:file.name,idx:i});}else if(['png','jpg','jpeg'].includes(ext)){const r=new FileReader();r.onload=e=>res({type:'img',data:e.target.result,name:file.name,idx:i});r.readAsDataURL(file);}else res({type:'other',name:file.name,idx:i});}));Promise.all(proms).then(results=>{let h='<div style="page-break-before:always;"></div><div class="pr-section"><div class="pr-section-title">'+title+'</div>';results.forEach(r=>{h+='<div style="break-inside:avoid;margin-bottom:16px;"><div style="font-size:7.5pt;color:#888;margin-bottom:4px;font-weight:600;">Fichier '+(r.idx+1)+' — '+r.name+'</div>';if(r.type==='img')h+='<img src="'+r.data+'" style="max-width:100%;border:0.5px solid #ccc;border-radius:4px;">';else if(r.type==='pdf')h+='<iframe src="'+r.url+'" style="width:100%;height:1050px;border:0.5px solid #ccc;border-radius:4px;" frameborder="0"></iframe>';else h+='<div style="padding:8px;background:#f8f8f8;border:0.5px solid #ccc;border-radius:4px;font-size:8pt;color:#555;">'+r.name+'</div>';h+='</div>';});h+='</div>';resolve(h);});});
+  const dynoF=(typeof dynamoFiles!=='undefined')?dynamoFiles:[];
+  const dgF=(typeof digitsoleFiles!=='undefined')?digitsoleFiles:[];
+  Promise.all([makeFileSection(dynoF,'Rapport dynamomètre'),makeFileSection(dgF,'Rapport Digitsole')]).then(([dynoH,dgH])=>{
+    const pr=document.getElementById('print-report');
+    if(pr) pr.innerHTML=(pr.innerHTML||'')+dynoH+dgH;
+    const iframes=document.querySelectorAll('#print-report iframe');
+    if(iframes.length>0){let loaded=0;iframes.forEach(iframe=>{iframe.onload=()=>{if(++loaded===iframes.length)setTimeout(()=>window.print(),800);};});setTimeout(()=>window.print(),2500);}
+    else window.print();
+  });
+}
+
+// ── INIT SCORES ───────────────────────────────────────────────────────────────
+buildDash();
+buildOSS();
+buildWOSI();
+onUrlChange_epaule();
+</script>
+
+<!-- CAMERA OVERLAY -->
+<div id="cam-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+  <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;">Photographier le document</div>
+  <video id="cam-video" autoplay playsinline style="max-width:90vw;max-height:60vh;border-radius:12px;background:#000;"></video>
+  <canvas id="cam-canvas" style="display:none;"></canvas>
+  <div style="display:flex;gap:12px;margin-top:16px;">
+    <button onclick="prendrePhoto()" style="padding:12px 24px;background:var(--epaule);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;">&#128247; Capturer</button>
+    <button onclick="fermerCamera()" style="padding:12px 20px;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:inherit;">Annuler</button>
+  </div>
+</div>
+<div id="print-report"></div>
+</body>
+</html>
